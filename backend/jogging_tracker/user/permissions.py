@@ -13,18 +13,15 @@ class IsUser(permissions.BasePermission):
 
 class IsManager(permissions.BasePermission):
     def has_permission(self, request, view):
-        print(request.user.role)
         return request.user.is_authenticated() and request.user.role == 'manager'
 
 
 class IsAdmin(permissions.BasePermission):
     def has_permission(self, request, view):
-        print(request.user.role)
         return request.user.is_authenticated() and request.user.role == 'admin'
 
 class IsAdminOrManager(permissions.BasePermission):
     def has_permission(self, request, view):
-        print(request.user.role)
         return request.user.is_authenticated() and (
             request.user.role == 'admin' or request.user.role == 'manager'
         )
