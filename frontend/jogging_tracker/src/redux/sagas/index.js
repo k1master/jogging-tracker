@@ -1,3 +1,7 @@
+import auth from './auth'
+
 export default function* rootSaga () {
-  yield []
+  yield [
+    auth()
+  ]
 }
