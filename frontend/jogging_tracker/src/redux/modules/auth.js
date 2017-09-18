@@ -15,7 +15,9 @@ export const SAVE_PROFILE = 'SAVE_PROFILE'
 // ------------------------------------
 
 export const login = createAction(DO_LOGIN)
-export const logout = createAction(DO_LOGOUT)
+export const logout = createAction(DO_LOGOUT, () => {
+  localStorage.removeItem('jogging_tracker_auth')
+})
 export const signup = createAction(DO_SIGNUP)
 export const getProfile = createAction(GET_PROFILE)
 export const saveProfile = createAction(SAVE_PROFILE)
@@ -54,19 +56,12 @@ export default handleActions({
     error: payload
   }),
 
-  [requestSuccess(DO_LOGOUT)]: (state, { payload }) => ({
+  [DO_LOGOUT]: (state, { payload }) => ({
     ...state,
     token: null,
-    status: requestSuccess(DO_LOGOUT),
+    status: DO_LOGOUT,
     me: null,
     error: null
-  }),
-
-  [requestFail(DO_LOGOUT)]: (state, { payload }) => ({
-    ...state,
-    token: null,
-    status: requestFail(DO_LOGOUT),
-    error: payload
   }),
 
   [requestSuccess(DO_SIGNUP)]: (state, { payload }) => ({

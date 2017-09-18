@@ -1,10 +1,17 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem } from 'reactstrap'
 import { canManageUsers } from 'helpers/roleHelpers'
+import { logout } from 'redux/modules/auth'
 
 class Header extends React.Component {
+  static propTypes = {
+    auth: PropTypes.object,
+    logout: PropTypes.func
+  }
+
   constructor(props) {
     super(props)
 
@@ -12,10 +19,16 @@ class Header extends React.Component {
       isOpen: false
     }
   }
+
   toggle = () => {
     this.setState({
       isOpen: !this.state.isOpen
     })
+  }
+
+  handleLogout = (e) => {
+    const { logout, history } = this.props
+    logout()
   }
 
   render() {
@@ -39,7 +52,7 @@ class Header extends React.Component {
                 <Link to='/profile' className='nav-link'>Profile</Link>
               </NavItem>
               <NavItem>
-                <Link to='/logout' className='nav-link'>Logout</Link>
+                <Link to='/' onClick={this.handleLogout} className='nav-link'>Logout</Link>
               </NavItem>
             </Nav>
             : <Nav className="ml-auto" navbar>
@@ -61,4 +74,8 @@ const selector = (state) => ({
   auth: state.auth
 })
 
-export default connect(selector)(Header)
+const actions = {
+  logout
+}
+
+export default connect(selector, actions)(Header)
