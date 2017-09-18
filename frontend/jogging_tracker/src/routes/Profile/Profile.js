@@ -14,6 +14,7 @@ class Profile extends Component {
   static propTypes = {
     auth: PropTypes.object,
     handleSubmit: PropTypes.func,
+    history: PropTypes.object,
     saveProfile: PropTypes.func
   };
 
@@ -26,7 +27,7 @@ class Profile extends Component {
 
   handleSave = (values) => {
     const { saveProfile } = this.props
-    saveProfile(values)
+    saveProfile({ body: values })
   }
 
   handleCancel = (values) => {

@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 import { withRouter } from 'react-router'
 import { signup, DO_SIGNUP } from 'redux/modules/auth'
-import { requestFail, requestSuccess } from 'redux/api/request'
+import { requestFail } from 'redux/api/request'
 import { isFieldRequired, ucFirst } from 'helpers'
 import InputField from 'components/InputField'
 
@@ -14,21 +14,18 @@ class Signup extends Component {
   static propTypes = {
     auth: PropTypes.object,
     handleSubmit: PropTypes.func,
+    history: PropTypes.object,
     signup: PropTypes.func
   };
 
-  componentWillReceiveProps (nextProps) {
-    const { history } = this.props
-    if (nextProps.auth.status === requestSuccess(DO_SIGNUP) && nextProps !== this.props) {
-      history.push('/login')
-    }
+  handleSignup = (values) => {
+    const { history, signup } = this.props
+    signup({
+      body: values,
+      success: () => history.push('/login')
+    })
   }
 
-  handleSignup = (values) => {
-    const { signup } = this.props
-    signup(values)
-  }
-  
   get errorText () {
     const { auth: { error } } = this.props
     return error

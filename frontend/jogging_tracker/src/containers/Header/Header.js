@@ -27,7 +27,7 @@ class Header extends React.Component {
   }
 
   handleLogout = (e) => {
-    const { logout, history } = this.props
+    const { logout } = this.props
     logout()
   }
 

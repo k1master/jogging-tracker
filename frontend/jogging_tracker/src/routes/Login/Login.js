@@ -7,7 +7,7 @@ import { Field, reduxForm } from 'redux-form'
 import { withRouter } from 'react-router'
 import { isFieldRequired } from 'helpers'
 import { login, DO_LOGIN } from 'redux/modules/auth'
-import { requestFail, requestSuccess } from 'redux/api/request'
+import { requestFail } from 'redux/api/request'
 
 const renderField = ({
   input,
@@ -28,19 +28,16 @@ class Login extends Component {
   static propTypes = {
     auth: PropTypes.object,
     handleSubmit: PropTypes.func,
+    history: PropTypes.object,
     login: PropTypes.func
   };
 
-  componentDidUpdate (prevProps) {
-    const { auth, history } = this.props
-    if (auth.status === requestSuccess(DO_LOGIN)) {
-      history.push('/dashboard')
-    }
-  }
-
   handleLogin = (values) => {
-    const { login } = this.props
-    login(values)
+    const { history, login } = this.props
+    login({
+      body: values,
+      success: () => history.push('/dashboard')
+    })
   }
 
   render() {

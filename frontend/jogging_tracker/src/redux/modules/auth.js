@@ -66,9 +66,7 @@ export default handleActions({
 
   [requestSuccess(DO_SIGNUP)]: (state, { payload }) => ({
     ...state,
-    token: payload.token,
     status: requestSuccess(DO_SIGNUP),
-    me: payload.info,
     error: null
   }),
 
