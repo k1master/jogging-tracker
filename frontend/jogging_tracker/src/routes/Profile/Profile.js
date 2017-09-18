@@ -30,7 +30,7 @@ class Profile extends Component {
   }
 
   handleCancel = (values) => {
-    const { auth, history } = this.props
+    const { history } = this.props
     history.push('/dashboard')
   }
 

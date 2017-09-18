@@ -16,7 +16,7 @@ export default ({
     })
 
     const res = yield call(
-      client[method.toLowerCase()],
+      client(method.toLowerCase()),
       typeof path === 'function' ? path(action) : path,
       action.payload
     )
