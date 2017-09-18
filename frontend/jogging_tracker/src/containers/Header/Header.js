@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem } from 'reactstrap'
+import { canManageUsers } from 'helpers'
 
 class Header extends React.Component {
   constructor(props) {
@@ -28,9 +29,9 @@ class Header extends React.Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             {auth.me
             ? <Nav className="ml-auto" navbar>
-              <NavItem>
+              {canManageUsers(auth.me) && <NavItem>
                 <Link to='/users' className='nav-link'>Users</Link>
-              </NavItem>
+              </NavItem>}
               <NavItem>
                 <Link to='/records' className='nav-link'>Records</Link>
               </NavItem>
