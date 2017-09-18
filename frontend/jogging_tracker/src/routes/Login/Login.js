@@ -1,14 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Col, Form, FormFeedback, FormGroup, Label, Row } from 'reactstrap'
+import { Alert, Button, Col, Form, FormFeedback, FormGroup, Label, Row } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 import { withRouter } from 'react-router'
+import { isFieldRequired } from 'helpers'
 import { login, DO_LOGIN } from 'redux/modules/auth'
 import { requestFail, requestSuccess } from 'redux/api/request'
-
-const required = value => (value ? undefined : 'Required')
 
 const renderField = ({
   input,
@@ -46,25 +45,27 @@ class Login extends Component {
 
   render() {
     const { auth, handleSubmit } = this.props
-    console.log(this.props)
+
     return (
       <Row>
-        <Col xs={12}><h2 className='text-center'>Login</h2></Col>
-        {auth.status === requestFail(DO_LOGIN)}
         <Col sm={12} md={{ size: 6, offset: 3 }}>
+          {auth.status === requestFail(DO_LOGIN) &&
+            <Alert color="danger">Invalid email or password!</Alert>
+          }
+          <h2 className='text-center'>Login</h2>
           <Form onSubmit={handleSubmit(this.handleLogin)}>
             <Field
               label='Email'
               name='email'
               type='email'
-              valdate={[required]}
+              validate={[isFieldRequired]}
               component={renderField}
             />
             <Field
               label='Password'
               name='password'
               type='password'
-              valdate={[required]}
+              validate={[isFieldRequired]}
               component={renderField}
             />
             <Button color='primary' type='submit'>Login</Button>

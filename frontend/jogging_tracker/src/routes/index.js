@@ -4,6 +4,7 @@ import { Container } from 'reactstrap'
 import App from './App'
 import Dashboard from './Dashboard'
 import Login from './Login'
+import Signup from './Signup'
 import Header from 'containers/Header'
 
 export default (props) => (
@@ -14,6 +15,7 @@ export default (props) => (
         <Route exact path='/' component={App} />
         <Route path='/dashboard' component={Dashboard} />
         <Route path='/login' component={Login} />
+        <Route path='/signup' component={Signup} />
       </Container>
     </div>
   </Router>
