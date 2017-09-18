@@ -1,5 +1,5 @@
 import { takeLatest } from 'redux-saga/effects'
-import { DO_LOGIN, DO_LOGOUT, DO_SIGNUP, GET_PROFILE } from 'redux/modules/auth'
+import { DO_LOGIN, DO_LOGOUT, DO_SIGNUP, GET_PROFILE, SAVE_PROFILE } from 'redux/modules/auth'
 import apiCall from '../api/apiCall'
 
 const doLogin = apiCall({
@@ -41,9 +41,22 @@ const doGetProfile = apiCall({
   path: () => '/users/profile/'
 })
 
+const doSaveProfile = apiCall({
+  type: SAVE_PROFILE,
+  method: 'put',
+  path: () => '/users/profile/',
+  success: (res, action) => {
+    localStorage.setItem('jogging_tracker_auth', JSON.stringify({
+      info: res.data,
+      token: JSON.parse(localStorage.getItem('jogging_tracker_auth')).token
+    }))
+  }
+})
+
 export default function* rootSaga () {
   yield takeLatest(DO_LOGIN, doLogin)
   yield takeLatest(DO_LOGOUT, doLogout)
   yield takeLatest(DO_SIGNUP, doSignup)
   yield takeLatest(GET_PROFILE, doGetProfile)
+  yield takeLatest(SAVE_PROFILE, doSaveProfile)
 }

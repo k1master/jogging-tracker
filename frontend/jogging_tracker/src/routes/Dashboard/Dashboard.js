@@ -18,7 +18,8 @@ const Dashboard = ({ profile }) => (
           {canManageUsers(profile) &&
             <ListGroupItem><Link to='/users'>Manage Users</Link></ListGroupItem>
           }
-          <ListGroupItem><Link to='/records'>Manage Jogging track records</Link></ListGroupItem>
+          <ListGroupItem><Link to='/records'>Manage Jogging Track Records</Link></ListGroupItem>
+          <ListGroupItem><Link to='/profile'>Edit Your Profile</Link></ListGroupItem>
         </ListGroup>
       </Jumbotron>
     </Col>

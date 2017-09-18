@@ -8,6 +8,7 @@ export const DO_LOGIN = 'DO_LOGIN'
 export const DO_LOGOUT = 'DO_LOGOUT'
 export const DO_SIGNUP = 'DO_SIGNUP'
 export const GET_PROFILE = 'GET_PROFILE'
+export const SAVE_PROFILE = 'SAVE_PROFILE'
 
 // ------------------------------------
 // Actions
@@ -17,6 +18,7 @@ export const login = createAction(DO_LOGIN)
 export const logout = createAction(DO_LOGOUT)
 export const signup = createAction(DO_SIGNUP)
 export const getProfile = createAction(GET_PROFILE)
+export const saveProfile = createAction(SAVE_PROFILE)
 
 const getInitialState = () => {
   let authRestore = JSON.parse(localStorage.getItem('jogging_tracker_auth') || null)
@@ -81,6 +83,13 @@ export default handleActions({
     status: requestFail(DO_SIGNUP),
     me: null,
     error: payload
+  }),
+
+  [requestSuccess(SAVE_PROFILE)]: (state, { payload }) => ({
+    ...state,
+    status: requestSuccess(SAVE_PROFILE),
+    me: payload,
+    error: null
   })
 
 }, getInitialState())
