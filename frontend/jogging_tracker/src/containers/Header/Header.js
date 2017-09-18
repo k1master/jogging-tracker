@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem } from 'reactstrap'
-import { canManageUsers } from 'helpers'
+import { canManageUsers } from 'helpers/roleHelpers'
 
 class Header extends React.Component {
   constructor(props) {

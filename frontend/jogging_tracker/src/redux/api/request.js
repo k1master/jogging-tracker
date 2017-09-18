@@ -1,6 +1,6 @@
 // import { put } from 'redux-saga/effects';
 
-export const requestStarted = type => `${type}/pending`
+export const requestPending = type => `${type}/pending`
 
 export const requestSuccess = type => `${type}/success`
 

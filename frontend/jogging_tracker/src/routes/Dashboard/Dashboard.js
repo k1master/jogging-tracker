@@ -2,7 +2,7 @@ import React from 'react'
 import { Col, Jumbotron, ListGroup, ListGroupItem, Row } from 'reactstrap'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { canManageUsers } from 'helpers'
+import { canManageUsers } from 'helpers/roleHelpers'
 import './Dashboard.scss'
 
 const Dashboard = ({ profile }) => (

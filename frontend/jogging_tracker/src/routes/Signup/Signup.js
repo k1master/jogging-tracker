@@ -10,21 +10,6 @@ import { requestFail, requestSuccess } from 'redux/api/request'
 import { isFieldRequired, ucFirst } from 'helpers'
 import InputField from 'components/InputField'
 
-const roleOptions = [
-  {
-    value: 'user',
-    label: 'User'
-  },
-  {
-    value: 'manager',
-    label: 'Manager'
-  },
-  {
-    value: 'admin',
-    label: 'Admin'
-  }
-]
-
 class Signup extends Component {
   static propTypes = {
     auth: PropTypes.object,

@@ -18,11 +18,19 @@ export const logout = createAction(DO_LOGOUT)
 export const signup = createAction(DO_SIGNUP)
 export const getProfile = createAction(GET_PROFILE)
 
-const initialState = {
-  token: null,
-  me: null,
-  status: 'INIT',
-  error: null
+const getInitialState = () => {
+  let authRestore = JSON.parse(localStorage.getItem('jogging_tracker_auth') || null)
+  return authRestore ? {
+    token: authRestore.token,
+    me: authRestore.info,
+    status: 'INIT',
+    error: null
+  } : {
+    token: null,
+    me: null,
+    status: 'INIT',
+    error: null
+  }
 }
 
 // ------------------------------------
@@ -75,4 +83,4 @@ export default handleActions({
     error: payload
   })
 
-}, initialState)
+}, getInitialState())

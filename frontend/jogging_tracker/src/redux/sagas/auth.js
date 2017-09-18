@@ -1,5 +1,5 @@
 import { takeLatest } from 'redux-saga/effects'
-import { DO_LOGIN, DO_LOGOUT, DO_SIGNUP } from 'redux/modules/auth'
+import { DO_LOGIN, DO_LOGOUT, DO_SIGNUP, GET_PROFILE } from 'redux/modules/auth'
 import apiCall from '../api/apiCall'
 
 const doLogin = apiCall({
@@ -35,8 +35,15 @@ const doSignup = apiCall({
   }
 })
 
+const doGetProfile = apiCall({
+  type: GET_PROFILE,
+  method: 'get',
+  path: () => '/users/profile/'
+})
+
 export default function* rootSaga () {
   yield takeLatest(DO_LOGIN, doLogin)
   yield takeLatest(DO_LOGOUT, doLogout)
   yield takeLatest(DO_SIGNUP, doSignup)
+  yield takeLatest(GET_PROFILE, doGetProfile)
 }

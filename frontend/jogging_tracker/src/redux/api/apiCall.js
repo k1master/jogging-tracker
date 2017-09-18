@@ -1,6 +1,6 @@
 import { call, put } from 'redux-saga/effects'
 import { get } from 'lodash'
-import { requestFail, requestStarted, requestSuccess } from './request'
+import { requestFail, requestPending, requestSuccess } from './request'
 import client from './client'
 
 export default ({
@@ -12,7 +12,7 @@ export default ({
 }) => function* (action) {
   try {
     yield put({
-      type: requestStarted(type)
+      type: requestPending(type)
     })
 
     const res = yield call(
