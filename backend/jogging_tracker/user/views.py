@@ -1,5 +1,5 @@
 from .models import User
-from .serializers import UserSerializer
+from .serializers import UserSerializer, UserCreateSerializer
 from rest_framework import viewsets
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.permissions import IsAuthenticated
@@ -18,7 +18,7 @@ class UserViewSet(viewsets.ModelViewSet):
     @list_route(methods=['put', 'get'], permission_classes=[IsAuthenticated,], url_path='profile')
     def profile(self, request, *args, **kwargs):
         if request.method in ['PUT']:
-            serializer = self.serializer_class(instance=request.user, data=request.data)
+            serializer = UserCreateSerializer(instance=request.user, data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
         else:
