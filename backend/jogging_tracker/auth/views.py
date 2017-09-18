@@ -9,7 +9,7 @@ from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 from rest_framework_jwt.serializers import JSONWebTokenSerializer
 from rest_framework_jwt.utils import jwt_response_payload_handler
 from user.models import User
-from user.serializers import UserSerializer
+from user.serializers import UserSerializer, UserCreateSerializer
 
 
 class LoginView(APIView):
@@ -38,7 +38,7 @@ class LoginView(APIView):
 
 
 class RegisterView(CreateModelMixin, GenericAPIView):
-    serializer_class = UserSerializer
+    serializer_class = UserCreateSerializer
     authentication_classes = ()
 
     def post(self, request):
