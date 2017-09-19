@@ -25,14 +25,16 @@ export default ({
   path,
   headers,
   success,
-  fail
+  fail,
+  payloadOnSuccess,
+  payloadOnFail
 }) => function* (action) {
   const {
     body,
     params,
     success: successCallback,
     fail: failCallback
-  } = action.payload
+  } = (action.payload || {})
 
   try {
     yield put({
@@ -52,7 +54,7 @@ export default ({
 
     yield put({
       type: requestSuccess(type),
-      payload: res.data
+      payload: payloadOnSuccess ? payloadOnSuccess(res.data, action) : res.data
     })
   } catch (err) {
     const errRes = get(err, 'response', err)
@@ -62,7 +64,7 @@ export default ({
 
     yield put({
       type: requestFail(type),
-      payload: errRes
+      payload: payloadOnFail ? payloadOnFail(errRes, action) : errRes
     })
   }
 }
