@@ -8,7 +8,8 @@ import Login from './Login'
 import Profile from './Profile'
 import Signup from './Signup'
 import Users from './Users'
-import { userIsAuthenticatedRedir, userIsNotAuthenticatedRedir } from 'helpers/authHelpers'
+import { userIsAuthenticatedRedir, userIsNotAuthenticatedRedir, userIsAdminOrManagerRedir }
+  from 'helpers/authHelpers'
 import 'styles/core.scss'
 
 const routes = ({ isAuthenticated }) => (
@@ -27,7 +28,9 @@ const routes = ({ isAuthenticated }) => (
         <Route path='/signup' component={userIsNotAuthenticatedRedir(Signup)} />
         <Route path='/dashboard' component={userIsAuthenticatedRedir(Dashboard)} />
         <Route path='/profile' component={userIsAuthenticatedRedir(Profile)} />
-        <Route path='/users' component={userIsAuthenticatedRedir(Users)} />
+        <Route path='/users' component={userIsAuthenticatedRedir(
+          userIsAdminOrManagerRedir(Users)
+        )} />
       </Container>
     </div>
   </Router>

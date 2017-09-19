@@ -3,7 +3,7 @@ import { connectedRouterRedirect } from 'redux-auth-wrapper/history4/redirect'
 import connectedAuthWrapper from 'redux-auth-wrapper/connectedAuthWrapper'
 import { DO_LOGIN } from 'redux/modules/auth'
 import { requestPending } from 'redux/api/request'
-import { isAdmin } from './roleHelpers'
+import { isAdmin, isManager } from './roleHelpers'
 import LoggingIn from 'components/LoggingIn'
 
 const locationHelper = locationHelperBuilder({})
@@ -24,12 +24,13 @@ export const userIsAuthenticatedRedir = connectedRouterRedirect({
   redirectPath: '/login'
 })
 
-export const userIsAdminRedir = connectedRouterRedirect({
+export const userIsAdminOrManagerRedir = connectedRouterRedirect({
   redirectPath: '/dashboard',
   allowRedirectBack: false,
-  authenticatedSelector: state => state.auth.me !== null && isAdmin(state.auth.me),
-  predicate: user => isAdmin(user),
-  wrapperDisplayName: 'UserIsAdmin'
+  authenticatedSelector: state => state.auth.me !== null &&
+    (isAdmin(state.auth.me) || isManager(state.auth.me)),
+  predicate: user => isAdmin(user) || isManager(user),
+  wrapperDisplayName: 'UserIsAdminOrManager'
 })
 
 const userIsNotAuthenticatedDefaults = {

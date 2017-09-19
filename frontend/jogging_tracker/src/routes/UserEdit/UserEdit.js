@@ -9,6 +9,7 @@ import { withRouter } from 'react-router'
 import { createUser, getUser, updateUser, UPDATE_USER } from 'redux/modules/user'
 import { requestFail, requestSuccess } from 'redux/api/request'
 import { isFieldRequired, ucFirst } from 'helpers'
+import { isAdmin } from 'helpers/roleHelpers'
 import InputField from 'components/InputField'
 
 const roleOptions = [
@@ -19,20 +20,17 @@ const roleOptions = [
   {
     value: 'manager',
     label: 'Manager'
-  },
-  {
-    value: 'admin',
-    label: 'Admin'
   }
 ]
 
 class UserEdit extends Component {
   static propTypes = {
-    initialValues: PropTypes.object,
-    handleSubmit: PropTypes.func,
-    history: PropTypes.object,
     createUser: PropTypes.func,
     getUser: PropTypes.func,
+    handleSubmit: PropTypes.func,
+    history: PropTypes.object,
+    initialValues: PropTypes.object,
+    profile: PropTypes.object,
     updateUser: PropTypes.func,
     userState: PropTypes.object
   };
@@ -65,7 +63,7 @@ class UserEdit extends Component {
   }
 
   render() {
-    const { userState, handleSubmit, match: { params } } = this.props
+    const { userState, handleSubmit, match: { params }, profile } = this.props
 
     return (
       <Row>
@@ -76,7 +74,9 @@ class UserEdit extends Component {
           {userState.status === requestSuccess(UPDATE_USER) &&
             <Alert color='success'>Updated successfully!</Alert>
           }
-          <h2 className='text-center'>Edit User</h2>
+          <h2 className='text-center'>
+            {params.id ? 'Edit User' : 'Add New User'}
+          </h2>
           <Form onSubmit={handleSubmit(this.handleSave)}>
             <Field
               label='First Name'
@@ -102,7 +102,7 @@ class UserEdit extends Component {
               validate={[isFieldRequired]}
               component={InputField}
             />
-            <Field
+            {isAdmin(profile) && <Field
               label='Role'
               name='role'
               type='select'
@@ -110,25 +110,16 @@ class UserEdit extends Component {
               validate={[isFieldRequired]}
               component={InputField}
               options={roleOptions}
-            />
-            {!params.id && <Field
+            />}
+            <Field
               label='Password'
               name='password'
               type='password'
               placeholder='&#9679;&#9679;&#9679;&#9679;&#9679;'
-              required
-              validate={[isFieldRequired]}
+              required={!params.id}
+              validate={!params.id ? [isFieldRequired] : undefined}
               component={InputField}
-            />}
-            {!params.id && <Field
-              label='Confirm Password'
-              name='confirm_password'
-              type='password'
-              placeholder='&#9679;&#9679;&#9679;&#9679;&#9679;'
-              required
-              validate={[isFieldRequired]}
-              component={InputField}
-            />}
+            />
             <Row>
               <Col xs={6}>
                 <Link to='/users' className='btn btn-secondary'>
@@ -147,7 +138,8 @@ class UserEdit extends Component {
 }
 
 const selector = (state, props) => ({
-  initialValues: state.user.user,
+  profile: state.auth.me,
+  initialValues: props.match.params.id ? state.user.user : {},
   userState: state.user
 })
 
