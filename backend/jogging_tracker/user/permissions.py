@@ -8,20 +8,20 @@ __all__ = ['IsUser', 'IsManager', 'IsAdmin']
 class IsUser(permissions.BasePermission):
     def has_permission(self, request, view):
         print(request.user.role)
-        return request.user.is_authenticated() and request.user.role == 'user'
+        return request.user.is_authenticated() and request.user.is_user
 
 
 class IsManager(permissions.BasePermission):
     def has_permission(self, request, view):
-        return request.user.is_authenticated() and request.user.role == 'manager'
+        return request.user.is_authenticated() and request.user.is_manager
 
 
 class IsAdmin(permissions.BasePermission):
     def has_permission(self, request, view):
-        return request.user.is_authenticated() and request.user.role == 'admin'
+        return request.user.is_authenticated() and request.user.is_admin
 
 class IsAdminOrManager(permissions.BasePermission):
     def has_permission(self, request, view):
         return request.user.is_authenticated() and (
-            request.user.role == 'admin' or request.user.role == 'manager'
+            request.user.is_admin or request.user.is_manager
         )

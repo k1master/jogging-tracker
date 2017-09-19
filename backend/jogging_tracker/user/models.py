@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import BaseUserManager
+from django.utils.functional import cached_property
 
 # Create your models here.
 ROLE_CHOICES = (
@@ -9,6 +10,16 @@ ROLE_CHOICES = (
     (u'manager', u'Manager'),
     (u'user', u'User'),
 )
+
+
+class UserQuerySet(models.QuerySet):
+    def filter_by_user(self, user):
+        if user.is_admin:
+            return self.exclude(role='admin')
+        if user.is_manager:
+            return self.filter(role='user')
+        else:
+            return self.none()
 
 
 class UserManager(BaseUserManager):
@@ -40,6 +51,8 @@ class UserManager(BaseUserManager):
             raise ValueError('Superuser must have is_superuser=True.')
         return self._create_user(email, password, **extra_fields)
 
+    def get_queryset(self):
+        return UserQuerySet(self.model, using=self._db)
 
 class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(_('First Name'), max_length=50)
@@ -52,6 +65,18 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(_('date joined'), auto_now_add=True)
     USERNAME_FIELD = 'email'
     objects = UserManager()
+
+    @cached_property
+    def is_admin(self):
+        return self.role == 'admin'
+
+    @cached_property
+    def is_manager(self):
+        return self.role == 'manager'
+
+    @cached_property
+    def is_user(self):
+        return self.role == 'user'
 
     def __str__(self):
         return self.email
