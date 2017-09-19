@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { Field, reduxForm } from 'redux-form'
 import { withRouter } from 'react-router'
 import { saveProfile, SAVE_PROFILE } from 'redux/modules/auth'
-import { requestFail, requestSuccess } from 'redux/api/request'
+import { requestFail } from 'redux/api/request'
 import { isFieldRequired, ucFirst } from 'helpers'
 import InputField from 'components/InputField'
 
