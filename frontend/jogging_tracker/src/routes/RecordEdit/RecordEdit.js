@@ -6,12 +6,14 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Field, reduxForm } from 'redux-form'
 import { withRouter } from 'react-router'
+import moment from 'moment'
 import { createRecord, getRecord, updateRecord, UPDATE_RECORD } from 'redux/modules/tracking'
 import { getUsers } from 'redux/modules/user'
 import { requestFail, requestSuccess } from 'redux/api/request'
 import { isFieldRequired, ucFirst } from 'helpers'
 import { isUser } from 'helpers/roleHelpers'
 import InputField from 'components/InputField'
+import DateTimeField from 'components/DateTimeField'
 
 const getUserOptions = (userList) => {
   const userOptions = (userList ? userList.map((user, index) => ({
@@ -47,10 +49,11 @@ class RecordEdit extends Component {
 
   handleSave = (values) => {
     const { createRecord, updateRecord, match: { params }, history, profile } = this.props
-    const finalValues = isUser(profile) ? {
+    const finalValues = {
       ...values,
-      user: profile.id
-    } : values
+      date_recorded: moment(values.date_recorded).format('YYYY-MM-DD'),
+      user: isUser(profile) ? profile.id : values.user
+    }
 
     params.id
     ? updateRecord({
@@ -94,8 +97,11 @@ class RecordEdit extends Component {
               name='date_recorded'
               type='text'
               required
+              placeholder='YYYY-MM-DD'
+              dateFormat='YYYY-MM-DD'
+              timeFormat={false}
               validate={[isFieldRequired]}
-              component={InputField}
+              component={DateTimeField}
             />
             <Field
               label='Duration'
