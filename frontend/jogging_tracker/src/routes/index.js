@@ -6,6 +6,7 @@ import Dashboard from './Dashboard'
 import Header from 'containers/Header'
 import Login from './Login'
 import Profile from './Profile'
+import Records from './Records'
 import Signup from './Signup'
 import Users from './Users'
 import { userIsAuthenticatedRedir, userIsNotAuthenticatedRedir, userIsAdminOrManagerRedir }
@@ -31,6 +32,7 @@ const routes = ({ isAuthenticated }) => (
         <Route path='/users' component={userIsAuthenticatedRedir(
           userIsAdminOrManagerRedir(Users)
         )} />
+        <Route path='/records' component={userIsAuthenticatedRedir(Records)} />
       </Container>
     </div>
   </Router>
