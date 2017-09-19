@@ -1,7 +1,7 @@
 from .models import User
 from .serializers import UserSerializer, UserCreateSerializer, UserUpdateSerializer
 from rest_framework import viewsets
-from rest_framework.decorators import detail_route, list_route
+from rest_framework.decorators import list_route
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from .permissions import IsAdminOrManager

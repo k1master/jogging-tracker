@@ -20,6 +20,7 @@ from django.contrib import admin
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [
 	url(r'^users', include('user.urls', namespace='users')),
+    url(r'^records', include('trackings.urls', namespace='records')),
     url(r'^auth/', include('auth.urls', namespace='auth')),
     url(r'^admin/', admin.site.urls)
 ]
