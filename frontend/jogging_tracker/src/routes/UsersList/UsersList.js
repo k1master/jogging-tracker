@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Col, Row, Table } from 'reactstrap'
+import { Button, Table } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
@@ -8,6 +8,7 @@ import { withRouter } from 'react-router'
 import { getUsers, deleteUser } from 'redux/modules/user'
 import { ucFirst } from 'helpers'
 import MdPersonAdd from 'react-icons/lib/md/person-add'
+import confirm from 'containers/ConfirmModal'
 
 class UsersList extends Component {
   static propTypes = {
@@ -24,8 +25,13 @@ class UsersList extends Component {
 
   handleDeleteUser = (id) => () => {
     const { deleteUser } = this.props
-    deleteUser({ id })
+    confirm('Are you sure to delete the user?').then(
+      () => {
+        deleteUser({ id })
+      }
+    )
   }
+
   render() {
     const { users } = this.props
     const usersList = users && users.results

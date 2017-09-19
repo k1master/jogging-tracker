@@ -5259,6 +5259,10 @@ rc@^1.0.1, rc@^1.1.6, rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-confirm@^0.1.16:
+  version "0.1.16"
+  resolved "https://registry.yarnpkg.com/react-confirm/-/react-confirm-0.1.16.tgz#953ceec7ba736867226d7032aa01ab4a5da82438"
+
 react-dev-utils@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-4.0.1.tgz#106ae3d29f811c169d459bb9215a5933b7e11fb6"
