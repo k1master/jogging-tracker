@@ -92,7 +92,7 @@ REST_FRAMEWORK = {
 AUTH_USER_MODEL = "user.User"
 
 JWT_AUTH = {
-    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=3600),
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(seconds=86400),
 }
 
 CORS_ORIGIN_WHITELIST = (

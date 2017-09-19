@@ -17,7 +17,7 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.request.method in ['POST']:
             return UserCreateSerializer
-        elif self.request.method in ['PUT']:
+        elif self.request.method in ['PUT', 'PATCH']:
             return UserUpdateSerializer
         else:
             # Default for get and other requests is the read only serializer
