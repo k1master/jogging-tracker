@@ -139,11 +139,14 @@ class RecordEdit extends Component {
   }
 }
 
-const selector = (state, props) => ({
-  profile: state.auth.me,
-  initialValues: props.match.params.id ? state.tracking.record : {},
-  trackingState: state.tracking,
-  usersList: state.user.users.results
+const selector = ({ auth, tracking, user }, props) => ({
+  profile: auth.me,
+  initialValues: props.match.params.id && tracking.record ? {
+    ...tracking.record,
+    user: tracking.record.user
+  } : {},
+  trackingState: tracking,
+  usersList: user.users.results
 })
 
 const actions = {

@@ -49,6 +49,7 @@ class RecordsList extends Component {
             <tr>
               <th>#</th>
               <th>Date</th>
+              <th>User</th>
               <th className='text-center'>Duration</th>
               <th className='text-center'>Distance</th>
               <th className='text-right'>Actions</th>
@@ -59,6 +60,7 @@ class RecordsList extends Component {
               <tr key={index}>
                 <th scope='row'>{index + 1}</th>
                 <td>{record.date_recorded} {record.last_name}</td>
+                <td>{record.user_fullname}</td>
                 <td className='text-center'>{hhmmss(record.duration)}</td>
                 <td className='text-center'>{distanceUnit(record.distance)}</td>
                 <td className='text-right'>
