@@ -29,10 +29,11 @@ class UserViewSet(viewsets.ModelViewSet):
 
     @list_route(methods=['put', 'get'], permission_classes=[IsAuthenticated,], url_path='profile')
     def profile(self, request, *args, **kwargs):
+        SerializerClass = self.get_serializer_class()
         if request.method in ['PUT']:
-            serializers = self.serializer_class(instance=request.user, data=request.data)
+            serializer = SerializerClass(instance=request.user, data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
         else:
-            serializer = self.serializer_class(instance=request.user)
+            serializer = SerializerClass(instance=request.user)
         return Response(serializer.data)
