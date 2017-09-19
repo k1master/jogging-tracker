@@ -6,7 +6,7 @@ import apiCall from '../api/apiCall'
 const doGetUser = apiCall({
   type: GET_USER,
   method: 'get',
-  path: ({ payload }) => `/auth/users/${payload.id}/`
+  path: ({ payload }) => `/users/${payload.id}/`
 })
 
 const doGetUsers = apiCall({
@@ -24,7 +24,7 @@ const doCreateUser = apiCall({
 const doUpdateUser = apiCall({
   type: UPDATE_USER,
   method: 'put',
-  path: ({ payload }) => `/users/${payload.id}`
+  path: ({ payload }) => `/users/${payload.id}/`
 })
 
 const doDeleteUser = apiCall({

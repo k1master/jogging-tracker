@@ -15,7 +15,7 @@ export default ({
     </Label>
     <Input {...input} placeholder={placeholder || label} type={type}>
       {type === 'select' && options ? options.map((item, index) => (
-        <option value={item.value}>{item.label}</option>
+        <option key={index} value={item.value}>{item.label}</option>
       )) : undefined}
     </Input>
     {touched && error && <FormFeedback>{error}</FormFeedback>}

@@ -51,7 +51,7 @@ class UsersList extends Component {
               <th>Name</th>
               <th>Email</th>
               <th>Role</th>
-              <th>Actions</th>
+              <th className='text-right'>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -61,7 +61,7 @@ class UsersList extends Component {
                 <td>{user.first_name} {user.last_name}</td>
                 <td>{user.email}</td>
                 <td>{ucFirst(user.role)}</td>
-                <td>
+                <td className='text-right'>
                   <Link className='btn btn-primary btn-sm' to={`/users/edit/${user.id}`}>
                     Edit
                   </Link>

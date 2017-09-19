@@ -7,5 +7,6 @@ export default () => (
   <div>
     <Route path='/users' exact component={UsersList} />
     <Route path='/users/edit/:id' component={UserEdit} />
+    <Route path='/users/new' component={UserEdit} />
   </div>
 )
