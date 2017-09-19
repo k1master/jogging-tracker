@@ -18,16 +18,12 @@ class Profile extends Component {
     saveProfile: PropTypes.func
   };
 
-  componentDidUpdate (prevProps) {
-    const { auth, history } = this.props
-    if (auth.status === requestSuccess(SAVE_PROFILE)) {
-      history.push('/dashboard')
-    }
-  }
-
   handleSave = (values) => {
-    const { saveProfile } = this.props
-    saveProfile({ body: values })
+    const { history, saveProfile } = this.props
+    saveProfile({
+      body: values,
+      success: () => history.push('/dashboard')
+    })
   }
 
   handleCancel = (values) => {
