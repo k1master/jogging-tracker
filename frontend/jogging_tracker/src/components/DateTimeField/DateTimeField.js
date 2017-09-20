@@ -16,7 +16,7 @@ export default ({
     <Label>
       {label}
     </Label>
-    <DateTime {...input} placeholder={placeholder}
+    <DateTime {...input} inputProps={{ placeholder }}
       dateFormat={dateFormat} timeFormat={timeFormat} {...otherProps} />
     {touched && error && <FormFeedback>{error}</FormFeedback>}
   </FormGroup>

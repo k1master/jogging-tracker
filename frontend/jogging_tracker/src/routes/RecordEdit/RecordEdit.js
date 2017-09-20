@@ -6,11 +6,10 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { Field, reduxForm } from 'redux-form'
 import { withRouter } from 'react-router'
-import moment from 'moment'
 import { createRecord, getRecord, updateRecord, UPDATE_RECORD } from 'redux/modules/tracking'
 import { getUsers } from 'redux/modules/user'
 import { requestFail, requestSuccess } from 'redux/api/request'
-import { isFieldRequired, ucFirst } from 'helpers'
+import { getDateStr, isFieldRequired, ucFirst } from 'helpers'
 import { isUser } from 'helpers/roleHelpers'
 import InputField from 'components/InputField'
 import InputGroupField from 'components/InputGroupField'
@@ -52,7 +51,7 @@ class RecordEdit extends Component {
     const { createRecord, updateRecord, match: { params }, history, profile } = this.props
     const finalValues = {
       ...values,
-      date_recorded: moment(values.date_recorded).format('YYYY-MM-DD'),
+      date_recorded: getDateStr(values.date_recorded),
       user: isUser(profile) ? profile.id : values.user
     }
 
@@ -89,7 +88,7 @@ class RecordEdit extends Component {
           {trackingState.status === requestSuccess(UPDATE_RECORD) &&
             <Alert color='success'>Updated successfully!</Alert>
           }
-          <h2 className='text-center'>
+          <h2 className='text-center mb-5'>
             {params.id ? 'Edit Jogging Record' : 'Add New Jogging Record'}
           </h2>
           <Form onSubmit={handleSubmit(this.handleSave)}>

@@ -44,7 +44,7 @@ class Signup extends Component {
           {auth.status === requestFail(DO_SIGNUP) &&
             <Alert color='danger'>{this.errorText}</Alert>
           }
-          <h2 className='text-center'>New User Signup</h2>
+          <h2 className='text-center mb-5'>New User Signup</h2>
           <Form onSubmit={handleSubmit(this.handleSignup)}>
             <Row>
               <Col sm={6} xs={12}>

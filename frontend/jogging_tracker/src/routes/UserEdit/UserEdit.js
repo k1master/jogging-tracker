@@ -74,7 +74,7 @@ class UserEdit extends Component {
           {userState.status === requestSuccess(UPDATE_USER) &&
             <Alert color='success'>Updated successfully!</Alert>
           }
-          <h2 className='text-center'>
+          <h2 className='text-center mb-5'>
             {params.id ? 'Edit User' : 'Add New User'}
           </h2>
           <Form onSubmit={handleSubmit(this.handleSave)}>

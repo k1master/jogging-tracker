@@ -49,7 +49,7 @@ class Login extends Component {
           {auth.status === requestFail(DO_LOGIN) &&
             <Alert color="danger">Invalid email or password!</Alert>
           }
-          <h2 className='text-center'>Login</h2>
+          <h2 className='text-center mb-5'>Login</h2>
           <Form onSubmit={handleSubmit(this.handleLogin)}>
             <Field
               label='Email'

@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 export const isFieldRequired = value =>
   value ? undefined : 'This Field is Required.'
 
@@ -19,3 +21,6 @@ export const hhmmss = (secs) => {
 
 export const distanceUnit = (distance) =>
   distance < 1000 ? distance + 'm' : Math.round(distance / 100) / 10 + 'km'
+
+export const getDateStr = (dateTime) =>
+  dateTime ? moment(dateTime).format('YYYY-MM-DD') : undefined

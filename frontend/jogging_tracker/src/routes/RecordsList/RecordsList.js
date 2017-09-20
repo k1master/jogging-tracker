@@ -1,20 +1,23 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Button, Table } from 'reactstrap'
+import { Button, Col, Form, Table, Row } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { Field, reduxForm } from 'redux-form'
 import { withRouter } from 'react-router'
 import { getRecords, deleteRecord } from 'redux/modules/tracking'
-import { distanceUnit, hhmmss } from 'helpers'
+import { distanceUnit, getDateStr, hhmmss } from 'helpers'
 import MdAddCircleOutline from 'react-icons/lib/md/add-circle-outline'
 import confirm from 'containers/ConfirmModal'
+import DateTimeField from 'components/DateTimeField'
 
 class RecordsList extends Component {
   static propTypes = {
     deleteRecord: PropTypes.func,
     getRecords: PropTypes.func,
     records: PropTypes.object,
+    handleSubmit: PropTypes.func,
     history: PropTypes.object,
   };
 
@@ -31,20 +34,53 @@ class RecordsList extends Component {
       }
     )
   }
+  
+  handleFilter = (values) => {
+    const { getRecords } = this.props
+    getRecords({
+      params: {
+        from: getDateStr(values.from),
+        to: getDateStr(values.to)
+      }
+    })
+  }
 
   render() {
-    const { records } = this.props
+    const { handleSubmit, records } = this.props
     const recordsList = records && records.results
 
     return (
       <div>
-        <h2 className='text-center'>Manage Jogging Records</h2>
-        <div className='text-right'>
-          <Link to='/records/new' className='btn btn-link'>
-            <MdAddCircleOutline size='1.5em' /> Add a new record
-          </Link>
-        </div>
-        <Table>
+        <h2 className='text-center mb-5'>Manage Jogging Records</h2>
+        <Row className='text-right mb-3'>
+          <Col md={6} xs={12}>
+            <Form inline onSubmit={handleSubmit(this.handleFilter)}>
+              <Field
+                placeholder='From'
+                name='from'
+                dateFormat='YYYY-MM-DD'
+                timeFormat={false}
+                component={DateTimeField}
+              />
+              {' '}
+              <Field
+                placeholder='To'
+                name='to'
+                dateFormat='YYYY-MM-DD'
+                timeFormat={false}
+                component={DateTimeField}
+              />
+              {' '}
+              <Button color='secondary'>Filter</Button>
+            </Form>
+          </Col>
+          <Col md={6} xs={12}>
+            <Link to='/records/new' className='btn btn-primary'>
+              <MdAddCircleOutline size='1.2em' /> Add a New Record
+            </Link>
+          </Col>
+        </Row>
+        <Table striped responsive>
           <thead>
             <tr>
               <th>#</th>
@@ -92,5 +128,9 @@ const actions = {
 
 export default compose(
   connect(selector, actions),
+  reduxForm({
+    form: 'recordsFilterForm',
+    enableReinitialize: true
+  }),
   withRouter
 )(RecordsList)

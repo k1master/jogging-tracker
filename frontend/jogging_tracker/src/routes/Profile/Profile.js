@@ -49,7 +49,7 @@ class Profile extends Component {
           {auth.status === requestFail(SAVE_PROFILE) &&
             <Alert color='danger'>{this.errorText}</Alert>
           }
-          <h2 className='text-center'>Edit Your Profile</h2>
+          <h2 className='text-center mb-5'>Edit Your Profile</h2>
           <Form onSubmit={handleSubmit(this.handleSave)}>
             <Row>
               <Col sm={6} xs={12}>
