@@ -5,18 +5,20 @@ import { Link } from 'react-router-dom'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
+import { show } from 'redux-modal'
 import { withRouter } from 'react-router'
 import { getUsers, deleteUser } from 'redux/modules/user'
 import { ucFirst } from 'helpers'
-import MdPersonAdd from 'react-icons/lib/md/person-add'
 import { usersListSelector } from 'redux/selectors'
 import confirm from 'containers/ConfirmModal'
+import MdPersonAdd from 'react-icons/lib/md/person-add'
+import ReportModal from 'containers/ReportModal'
 
 class UsersList extends Component {
   static propTypes = {
     deleteUser: PropTypes.func,
     getUsers: PropTypes.func,
-    usersList: PropTypes.object,
+    usersList: PropTypes.array,
     history: PropTypes.object,
   };
 
@@ -32,6 +34,11 @@ class UsersList extends Component {
         deleteUser({ id })
       }
     )
+  }
+
+  handleViewReport = (user) => () => {
+    const { show } = this.props
+    show('reportModal', { user })
   }
 
   render() {
@@ -56,16 +63,20 @@ class UsersList extends Component {
             </tr>
           </thead>
           <tbody>
-            {usersList.map((user, index) => (
+            {usersList && usersList.map((user, index) => (
               <tr key={index}>
                 <th scope='row'>{index + 1}</th>
                 <td>{user.first_name} {user.last_name}</td>
                 <td>{user.email}</td>
                 <td>{ucFirst(user.role)}</td>
                 <td className='text-right'>
-                  <Link className='btn btn-primary btn-sm' to={`/users/edit/${user.id}`}>
+                  <Button color='info' size='sm' onClick={this.handleViewReport(user)}>
+                    Report
+                  </Button>
+                  {' '}
+                  <Button color='primary' tag={Link} size='sm' to={`/users/edit/${user.id}`}>
                     Edit
-                  </Link>
+                  </Button>
                   {' '}
                   <Button color='danger' size='sm' onClick={this.handleDeleteUser(user.id)}>
                     Delete
@@ -75,6 +86,7 @@ class UsersList extends Component {
             ))}
           </tbody>
         </Table>
+        <ReportModal />
       </div>
     )
   }
@@ -86,7 +98,8 @@ const selector = createStructuredSelector({
 
 const actions = {
   getUsers,
-  deleteUser
+  deleteUser,
+  show
 }
 
 export default compose(

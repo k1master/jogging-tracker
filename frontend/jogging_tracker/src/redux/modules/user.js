@@ -10,6 +10,7 @@ export const GET_USERS = 'GET_USERS'
 export const CREATE_USER = 'CREATE_USER'
 export const UPDATE_USER = 'UPDATE_USER'
 export const DELETE_USER = 'DELETE_USER'
+export const GET_USER_REPORT = 'GET_USER_REPORT'
 
 // ------------------------------------
 // Actions
@@ -20,13 +21,15 @@ export const getUsers = createAction(GET_USERS)
 export const createUser = createAction(CREATE_USER)
 export const updateUser = createAction(UPDATE_USER)
 export const deleteUser = createAction(DELETE_USER)
+export const getReport = createAction(GET_USER_REPORT)
 
 const initialState = {
   user: null,
   status: 'INIT',
   users: {
     results: []
-  }
+  },
+  report: null
 }
 
 // ------------------------------------
@@ -100,5 +103,15 @@ export default handleActions({
     status: requestFail(DELETE_USER),
     error: payload
   }),
+
+  [requestSuccess(GET_USER_REPORT)]: (state, { payload }) => ({
+    ...state,
+    report: payload
+  }),
+
+  [requestFail(GET_USER_REPORT)]: (state) => ({
+    ...state,
+    report: null
+  })
 
 }, initialState)

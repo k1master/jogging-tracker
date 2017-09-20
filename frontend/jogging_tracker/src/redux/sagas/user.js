@@ -1,5 +1,5 @@
 import { takeLatest } from 'redux-saga/effects'
-import { GET_USER, GET_USERS, CREATE_USER, UPDATE_USER, DELETE_USER }
+import { GET_USER, GET_USERS, CREATE_USER, UPDATE_USER, DELETE_USER, GET_USER_REPORT }
   from 'redux/modules/user'
 import apiCall from '../api/apiCall'
 
@@ -34,10 +34,17 @@ const doDeleteUser = apiCall({
   payloadOnSuccess: (res, { payload }) => ({ id: payload.id })
 })
 
+const doGetUserReport = apiCall({
+  type: GET_USER_REPORT,
+  method: 'get',
+  path: ({ payload }) => `/users/${payload.id}/report`
+})
+
 export default function* rootSaga () {
   yield takeLatest(GET_USER, doGetUser)
   yield takeLatest(GET_USERS, doGetUsers)
   yield takeLatest(CREATE_USER, doCreateUser)
   yield takeLatest(UPDATE_USER, doUpdateUser)
   yield takeLatest(DELETE_USER, doDeleteUser)
+  yield takeLatest(GET_USER_REPORT, doGetUserReport)
 }

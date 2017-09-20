@@ -2990,7 +2990,7 @@ hoist-non-react-statics@1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-1.2.0.tgz#aa448cf0986d55cc40773b17174b7dd066cb7cfb"
 
-hoist-non-react-statics@^2.2.1, hoist-non-react-statics@^2.3.0:
+hoist-non-react-statics@^2.2.1, hoist-non-react-statics@^2.3.0, hoist-non-react-statics@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.3.1.tgz#343db84c6018c650778898240135a1420ee22ce0"
 
@@ -5549,6 +5549,13 @@ redux-form@^7.0.4:
     lodash "^4.17.3"
     lodash-es "^4.17.3"
     prop-types "^15.5.9"
+
+redux-modal@^1.5.3:
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/redux-modal/-/redux-modal-1.5.3.tgz#714ea89b2935f1f0ec73c519ebf41f846ed12d92"
+  dependencies:
+    hoist-non-react-statics "^2.3.1"
+    prop-types "^15.5.10"
 
 redux-saga@^0.15.6:
   version "0.15.6"

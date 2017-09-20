@@ -51,6 +51,7 @@
     "redux-actions": "^2.2.1",
     "redux-auth-wrapper": "^2.0.1",
     "redux-form": "^7.0.4",
+    "redux-modal": "^1.5.3",
     "redux-saga": "^0.15.6",
     "reselect": "^3.0.1",
     "sass-loader": "^6.0.6",

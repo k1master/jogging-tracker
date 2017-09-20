@@ -1,29 +1,33 @@
 import React from 'react'
-import { Col, Jumbotron, ListGroup, ListGroupItem, Row } from 'reactstrap'
+import { Button, ButtonGroup, Col, Jumbotron, Row } from 'reactstrap'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { show } from 'redux-modal'
 import { createStructuredSelector } from 'reselect'
 import { canManageUsers } from 'helpers/roleHelpers'
 import { profileSelector } from 'redux/selectors'
+import ReportModal from 'containers/ReportModal'
 import './Dashboard.scss'
 
-const Dashboard = ({ profile }) => (
+const Dashboard = ({ profile, show }) => (
   <Row>
     <Col xs={12} md={{ size: 8, offset: 2 }}>
       <Jumbotron>
-        <h1 className="display-3">Welcome, {profile.first_name}!</h1>
+        <h1>Welcome, {profile.first_name}!</h1>
         <p className="lead">
           Thanks for using Jogging Tracker. <br />
           Please use the following navigations to use this app.
         </p>
-        <ListGroup>
+        <ButtonGroup vertical className='btn-block'>
           {canManageUsers(profile) &&
-            <ListGroupItem><Link to='/users'>Manage Users</Link></ListGroupItem>
+            <Button tag={Link} to='/users'>Manage Users</Button>
           }
-          <ListGroupItem><Link to='/records'>Manage Jogging Tracking Records</Link></ListGroupItem>
-          <ListGroupItem><Link to='/profile'>Edit Your Profile</Link></ListGroupItem>
-        </ListGroup>
+          <Button tag={Link} to='/records'>Manage Jogging Tracking Records</Button>
+          <Button onClick={()=> show('reportModal')}>View My Report</Button>
+          <Button tag={Link} to='/profile'>Edit Your Profile</Button>
+        </ButtonGroup>
       </Jumbotron>
+      <ReportModal user={profile} />
     </Col>
   </Row>
 )
@@ -32,4 +36,8 @@ const selector = createStructuredSelector({
   profile: profileSelector
 })
 
-export default connect(selector)(Dashboard)
+const actions = {
+  show
+}
+
+export default connect(selector, actions)(Dashboard)

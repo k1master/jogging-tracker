@@ -20,7 +20,7 @@ class RecordsList extends Component {
     getRecords: PropTypes.func,
     handleSubmit: PropTypes.func,
     history: PropTypes.object,
-    recordsList: PropTypes.object,
+    recordsList: PropTypes.array,
   };
 
   componentWillMount () {

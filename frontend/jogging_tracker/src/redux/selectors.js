@@ -23,3 +23,6 @@ export const trackingStateSelector = (state) =>
 
 export const userStateSelector = (state) =>
   get(state, 'user', {})
+
+export const reportSelector = (state) =>
+  get(state, 'user.report', {})
