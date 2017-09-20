@@ -1,4 +1,5 @@
 import { takeLatest } from 'redux-saga/effects'
+import { get, pick } from 'lodash'
 import { GET_RECORD, GET_RECORDS, CREATE_RECORD, UPDATE_RECORD, DELETE_RECORD }
   from 'redux/modules/tracking'
 import apiCall from '../api/apiCall'
@@ -12,7 +13,11 @@ const doGetRecord = apiCall({
 const doGetRecords = apiCall({
   type: GET_RECORDS,
   method: 'get',
-  path: () => `/records/`
+  path: () => `/records/`,
+  payloadOnSuccess: (res, { payload }) => ({
+    ...res,
+    ...pick(get(payload, 'params', {}), ['from', 'to', 'page', 'page_size']),
+  })
 })
 
 const doCreateRecord = apiCall({

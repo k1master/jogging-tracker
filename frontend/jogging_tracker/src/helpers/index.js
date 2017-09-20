@@ -26,3 +26,6 @@ export const distanceUnit = (distance, suffix = '') =>
 
 export const getDateStr = (dateTime) =>
   dateTime ? moment(dateTime).format('YYYY-MM-DD') : undefined
+
+export const getPageCount = ({ page_size, count }) =>
+  Math.ceil(count / page_size)

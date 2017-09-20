@@ -1,6 +1,6 @@
 import { createAction, handleActions } from 'redux-actions'
 import { requestSuccess, requestFail } from 'redux/api/request'
-import { reject } from 'lodash'
+import { omit, reject } from 'lodash'
 
 // ------------------------------------
 // Constants
@@ -10,6 +10,7 @@ export const GET_RECORDS = 'GET_RECORDS'
 export const CREATE_RECORD = 'CREATE_RECORD'
 export const UPDATE_RECORD = 'UPDATE_RECORD'
 export const DELETE_RECORD = 'DELETE_RECORD'
+export const SET_RECORDS_PAGINATION = 'SET_RECORDS_PAGINATION'
 
 // ------------------------------------
 // Actions
@@ -24,9 +25,14 @@ export const deleteRecord = createAction(DELETE_RECORD)
 const initialState = {
   record: null,
   status: 'INIT',
-  records: {
-    results: []
-  }
+  records: [],
+  params: {
+    count: 0,
+    previous: null,
+    next: null,
+    page_size: 10,
+    page: 1
+  },
 }
 
 // ------------------------------------
@@ -49,7 +55,11 @@ export default handleActions({
   [requestSuccess(GET_RECORDS)]: (state, { payload }) => ({
     ...state,
     status: requestSuccess(GET_RECORDS),
-    records: payload,
+    records: payload.results,
+    params: {
+      ...state.params,
+      ...omit(payload, 'results')
+    },
     error: null
   }),
 
@@ -88,9 +98,10 @@ export default handleActions({
   [requestSuccess(DELETE_RECORD)]: (state, { payload }) => ({
     ...state,
     status: requestSuccess(DELETE_RECORD),
-    records: {
-      ...state.records,
-      results: reject(state.records.results, { id: payload.id })
+    records: reject(state.records, { id: payload.id }),
+    params: {
+      ...state.params,
+      count: Math.max(state.params.count - 1, 0),
     },
     error: null
   }),

@@ -6,13 +6,15 @@ import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
+import { pick } from 'lodash'
 import { withRouter } from 'react-router'
 import { getRecords, deleteRecord } from 'redux/modules/tracking'
-import { recordsListSelector } from 'redux/selectors'
+import { recordsListSelector, recordsParamsSelector } from 'redux/selectors'
 import { distanceUnit, getDateStr, hhmmss } from 'helpers'
 import MdAddCircleOutline from 'react-icons/lib/md/add-circle-outline'
 import confirm from 'containers/ConfirmModal'
 import DateTimeField from 'components/DateTimeField'
+import Pagination from 'components/Pagination'
 
 class RecordsList extends Component {
   static propTypes = {
@@ -20,6 +22,7 @@ class RecordsList extends Component {
     getRecords: PropTypes.func,
     handleSubmit: PropTypes.func,
     history: PropTypes.object,
+    pagination: PropTypes.object,
     recordsList: PropTypes.array,
   };
 
@@ -42,13 +45,25 @@ class RecordsList extends Component {
     getRecords({
       params: {
         from: getDateStr(values.from),
-        to: getDateStr(values.to)
+        to: getDateStr(values.to),
+        page: 1
+      }
+    })
+  }
+
+  handlePagination = (pagination) => {
+    const { getRecords, params } = this.props
+    getRecords({
+      params: {
+        ...pick(params, ['from', 'to', 'page', 'page_size']),
+        ...pagination
       }
     })
   }
 
   render() {
-    const { handleSubmit, recordsList } = this.props
+    const { filterForm: { handleSubmit }, params, recordsList } = this.props
+    const pagination = pick(params, ['page', 'page_size', 'count'])
 
     return (
       <div>
@@ -117,13 +132,15 @@ class RecordsList extends Component {
             ))}
           </tbody>
         </Table>
+        <Pagination pagination={pagination} setPagination={this.handlePagination} />
       </div>
     )
   }
 }
 
 const selector = createStructuredSelector({
-  recordsList: recordsListSelector
+  recordsList: recordsListSelector,
+  params: recordsParamsSelector
 })
 
 const actions = {
@@ -135,7 +152,8 @@ export default compose(
   connect(selector, actions),
   reduxForm({
     form: 'recordsFilterForm',
-    enableReinitialize: true
+    enableReinitialize: true,
+    propNamespace: 'filterForm'
   }),
   withRouter
 )(RecordsList)

@@ -16,7 +16,7 @@ export const recordDetailSelector = (state) =>
   get(state, 'tracking.record', {})
 
 export const recordsListSelector = (state) =>
-  get(state, 'tracking.records.results', [])
+  get(state, 'tracking.records', [])
 
 export const trackingStateSelector = (state) =>
   get(state, 'tracking', {})
@@ -26,3 +26,6 @@ export const userStateSelector = (state) =>
 
 export const reportSelector = (state) =>
   get(state, 'user.report', {})
+
+export const recordsParamsSelector = (state) =>
+  get(state, 'tracking.params', {})
