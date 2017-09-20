@@ -7,7 +7,7 @@ import { createStructuredSelector } from 'reselect'
 import { Field, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
-import { createUser, getUser, updateUser, UPDATE_USER } from 'redux/modules/user'
+import { createUser, getUser, updateUser, CREATE_USER, UPDATE_USER } from 'redux/modules/user'
 import { isAdmin } from 'helpers/roleHelpers'
 import { isFieldRequired, ucFirst } from 'helpers'
 import { requestFail, requestSuccess } from 'redux/api/request'
@@ -22,8 +22,18 @@ const roleOptions = [
   {
     value: 'manager',
     label: 'Manager'
+  },
+  {
+    value: 'admin',
+    label: 'Admin'
   }
 ]
+
+const requestIsFailed = ({ status }) =>
+  status === requestFail(CREATE_USER) || status === requestFail(UPDATE_USER)
+
+const requestIsSuccess = ({ status }) =>
+  status === requestSuccess(CREATE_USER) || status === requestSuccess(UPDATE_USER)
 
 class UserEdit extends Component {
   static propTypes = {
@@ -70,10 +80,10 @@ class UserEdit extends Component {
     return (
       <Row>
         <Col sm={12} md={{ size: 4, offset: 4 }}>
-          {userState.status === requestFail(UPDATE_USER) &&
+          {requestIsFailed(userState) &&
             <Alert color='danger'>{this.errorText}</Alert>
           }
-          {userState.status === requestSuccess(UPDATE_USER) &&
+          {requestIsSuccess(userState) &&
             <Alert color='success'>Updated successfully!</Alert>
           }
           <h2 className='text-center mb-5'>

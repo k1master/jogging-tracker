@@ -7,7 +7,8 @@ import { createStructuredSelector } from 'reselect'
 import { Field, formValueSelector, reduxForm } from 'redux-form'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
-import { createRecord, getRecord, updateRecord, UPDATE_RECORD } from 'redux/modules/tracking'
+import { createRecord, getRecord, updateRecord, CREATE_RECORD, UPDATE_RECORD }
+  from 'redux/modules/tracking'
 import { distanceUnit, getDateStr, isFieldRequired, ucFirst } from 'helpers'
 import { getUsers } from 'redux/modules/user'
 import { isUser } from 'helpers/roleHelpers'
@@ -28,6 +29,12 @@ const getUserOptions = (userList) => {
   })
   return userOptions
 }
+
+const requeestIsFail = ({ status }) =>
+  status === requestFail(UPDATE_RECORD) || status === requestFail(CREATE_RECORD)
+
+const requeestIsSuccess = ({ status }) =>
+  status === requestSuccess(UPDATE_RECORD) || status === requestSuccess(CREATE_RECORD)
 
 class RecordEdit extends Component {
   static propTypes = {
@@ -84,10 +91,10 @@ class RecordEdit extends Component {
     return (
       <Row>
         <Col sm={12} md={{ size: 4, offset: 4 }}>
-          {trackingState.status === requestFail(UPDATE_RECORD) &&
+          {requeestIsFail(trackingState) &&
             <Alert color='danger'>{this.errorText}</Alert>
           }
-          {trackingState.status === requestSuccess(UPDATE_RECORD) &&
+          {requeestIsSuccess(trackingState) &&
             <Alert color='success'>Updated successfully!</Alert>
           }
           <h2 className='text-center mb-5'>
