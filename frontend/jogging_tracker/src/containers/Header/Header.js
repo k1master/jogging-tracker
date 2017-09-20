@@ -2,7 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Collapse, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem } from 'reactstrap'
+import { Collapse, Container, Navbar, NavbarToggler, NavbarBrand, Nav, NavItem }
+  from 'reactstrap'
 import { canManageUsers } from 'helpers/roleHelpers'
 import { logout } from 'redux/modules/auth'
 
@@ -65,6 +66,9 @@ class Header extends React.Component {
             </Nav>}
           </Collapse>
         </Navbar>
+        {auth.me && <Container fluid className='text-right mt-2 mb-2'>
+          Welcome <strong>{auth.me.first_name} {auth.me.last_name}</strong>!
+        </Container>}
       </div>
     )
   }
