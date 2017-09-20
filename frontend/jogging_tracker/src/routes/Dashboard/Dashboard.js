@@ -2,7 +2,9 @@ import React from 'react'
 import { Col, Jumbotron, ListGroup, ListGroupItem, Row } from 'reactstrap'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { createStructuredSelector } from 'reselect'
 import { canManageUsers } from 'helpers/roleHelpers'
+import { profileSelector } from 'redux/selectors'
 import './Dashboard.scss'
 
 const Dashboard = ({ profile }) => (
@@ -26,8 +28,8 @@ const Dashboard = ({ profile }) => (
   </Row>
 )
 
-const selector = (state) => ({
-  profile: state.auth && state.auth.me ? state.auth.me : {}
+const selector = createStructuredSelector({
+  profile: profileSelector
 })
 
 export default connect(selector)(Dashboard)

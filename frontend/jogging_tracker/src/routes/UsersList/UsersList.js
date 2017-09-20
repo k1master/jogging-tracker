@@ -4,17 +4,19 @@ import { Button, Table } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
 import { withRouter } from 'react-router'
 import { getUsers, deleteUser } from 'redux/modules/user'
 import { ucFirst } from 'helpers'
 import MdPersonAdd from 'react-icons/lib/md/person-add'
+import { usersListSelector } from 'redux/selectors'
 import confirm from 'containers/ConfirmModal'
 
 class UsersList extends Component {
   static propTypes = {
     deleteUser: PropTypes.func,
     getUsers: PropTypes.func,
-    users: PropTypes.object,
+    usersList: PropTypes.object,
     history: PropTypes.object,
   };
 
@@ -33,8 +35,7 @@ class UsersList extends Component {
   }
 
   render() {
-    const { users } = this.props
-    const usersList = users && users.results
+    const { usersList } = this.props
 
     return (
       <div>
@@ -55,7 +56,7 @@ class UsersList extends Component {
             </tr>
           </thead>
           <tbody>
-            {usersList && usersList.map((user, index) => (
+            {usersList.map((user, index) => (
               <tr key={index}>
                 <th scope='row'>{index + 1}</th>
                 <td>{user.first_name} {user.last_name}</td>
@@ -79,8 +80,8 @@ class UsersList extends Component {
   }
 }
 
-const selector = (state) => ({
-  users: state.user.users
+const selector = createStructuredSelector({
+  usersList: usersListSelector
 })
 
 const actions = {

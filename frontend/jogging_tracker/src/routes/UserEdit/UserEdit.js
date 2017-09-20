@@ -3,13 +3,15 @@ import PropTypes from 'prop-types'
 import { Alert, Button, Col, Form, Row } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { createStructuredSelector } from 'reselect'
 import { Field, reduxForm } from 'redux-form'
+import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import { createUser, getUser, updateUser, UPDATE_USER } from 'redux/modules/user'
-import { requestFail, requestSuccess } from 'redux/api/request'
-import { isFieldRequired, ucFirst } from 'helpers'
 import { isAdmin } from 'helpers/roleHelpers'
+import { isFieldRequired, ucFirst } from 'helpers'
+import { requestFail, requestSuccess } from 'redux/api/request'
+import * as selectors from 'redux/selectors'
 import InputField from 'components/InputField'
 
 const roleOptions = [
@@ -137,10 +139,10 @@ class UserEdit extends Component {
   }
 }
 
-const selector = (state, props) => ({
-  profile: state.auth.me,
-  initialValues: props.match.params.id ? state.user.user : {},
-  userState: state.user
+const selector = createStructuredSelector({
+  profile: selectors.profileSelector,
+  initialValues: (state, props) => props.match.params.id ? state.user.user : {},
+  userState: selectors.userStateSelector
 })
 
 const actions = {

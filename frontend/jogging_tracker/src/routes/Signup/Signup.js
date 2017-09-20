@@ -3,11 +3,13 @@ import PropTypes from 'prop-types'
 import { Alert, Button, Col, Form, Row } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
 import { Field, reduxForm } from 'redux-form'
 import { withRouter } from 'react-router'
-import { signup, DO_SIGNUP } from 'redux/modules/auth'
-import { requestFail } from 'redux/api/request'
+import { authStateSelector } from 'redux/selectors'
 import { isFieldRequired, ucFirst } from 'helpers'
+import { requestFail } from 'redux/api/request'
+import { signup, DO_SIGNUP } from 'redux/modules/auth'
 import InputField from 'components/InputField'
 
 class Signup extends Component {
@@ -110,8 +112,8 @@ class Signup extends Component {
   }
 }
 
-const selector = (state) => ({
-  auth: state.auth
+const selector = createStructuredSelector({
+  auth: authStateSelector
 })
 
 const actions = {

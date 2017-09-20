@@ -3,8 +3,10 @@ import PropTypes from 'prop-types'
 import { Alert, Button, Col, Form, FormFeedback, FormGroup, Label, Row } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
 import { Field, reduxForm } from 'redux-form'
 import { withRouter } from 'react-router'
+import { authStateSelector } from 'redux/selectors'
 import { isFieldRequired } from 'helpers'
 import { login, DO_LOGIN } from 'redux/modules/auth'
 import { requestFail } from 'redux/api/request'
@@ -45,7 +47,7 @@ class Login extends Component {
 
     return (
       <Row>
-        <Col sm={12} md={{ size: 6, offset: 3 }}>
+        <Col sm={12} md={{ size: 4, offset: 4 }}>
           {auth.status === requestFail(DO_LOGIN) &&
             <Alert color="danger">Invalid email or password!</Alert>
           }
@@ -73,8 +75,8 @@ class Login extends Component {
   }
 }
 
-const selector = (state) => ({
-  auth: state.auth
+const selector = createStructuredSelector({
+  auth: authStateSelector
 })
 
 const actions = {

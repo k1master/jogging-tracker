@@ -3,17 +3,19 @@ import PropTypes from 'prop-types'
 import { Alert, Button, Col, Form, FormGroup, Label, Input, Row } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { createStructuredSelector } from 'reselect'
 import { Field, formValueSelector, reduxForm } from 'redux-form'
+import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import { createRecord, getRecord, updateRecord, UPDATE_RECORD } from 'redux/modules/tracking'
-import { getUsers } from 'redux/modules/user'
-import { requestFail, requestSuccess } from 'redux/api/request'
 import { distanceUnit, getDateStr, isFieldRequired, ucFirst } from 'helpers'
+import { getUsers } from 'redux/modules/user'
 import { isUser } from 'helpers/roleHelpers'
+import { requestFail, requestSuccess } from 'redux/api/request'
+import * as selectors from 'redux/selectors'
+import DateTimeField from 'components/DateTimeField'
 import InputField from 'components/InputField'
 import InputGroupField from 'components/InputGroupField'
-import DateTimeField from 'components/DateTimeField'
 
 const getUserOptions = (userList) => {
   const userOptions = (userList ? userList.map((user, index) => ({
@@ -154,15 +156,14 @@ class RecordEdit extends Component {
   }
 }
 
-const selector = ({ auth, form, tracking, user }, props) => ({
-  profile: auth.me,
-  initialValues: props.match.params.id && tracking.record ? {
-    ...tracking.record,
-    user: tracking.record.user
-  } : {},
-  trackingState: tracking,
-  usersList: user.users.results,
-  formValues: formValueSelector('recordForm')({ form }, 'duration', 'distance')
+const selector = createStructuredSelector({
+  profile: selectors.profileSelector,
+  initialValues: (state, props) => (
+    props.match.params.id ? selectors.recordDetailSelector(state) : {}
+  ),
+  trackingState: selectors.trackingStateSelector,
+  usersList: selectors.usersListSelector,
+  formValues: (state) => formValueSelector('recordForm')(state, 'duration', 'distance')
 })
 
 const actions = {

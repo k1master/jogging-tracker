@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Button, Col, Form, Table, Row } from 'reactstrap'
-import { Link } from 'react-router-dom'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
 import { Field, reduxForm } from 'redux-form'
+import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import { getRecords, deleteRecord } from 'redux/modules/tracking'
+import { recordsListSelector } from 'redux/selectors'
 import { distanceUnit, getDateStr, hhmmss } from 'helpers'
 import MdAddCircleOutline from 'react-icons/lib/md/add-circle-outline'
 import confirm from 'containers/ConfirmModal'
@@ -16,9 +18,9 @@ class RecordsList extends Component {
   static propTypes = {
     deleteRecord: PropTypes.func,
     getRecords: PropTypes.func,
-    records: PropTypes.object,
     handleSubmit: PropTypes.func,
     history: PropTypes.object,
+    recordsList: PropTypes.object,
   };
 
   componentWillMount () {
@@ -46,8 +48,7 @@ class RecordsList extends Component {
   }
 
   render() {
-    const { handleSubmit, records } = this.props
-    const recordsList = records && records.results
+    const { handleSubmit, recordsList } = this.props
 
     return (
       <div>
@@ -121,8 +122,8 @@ class RecordsList extends Component {
   }
 }
 
-const selector = (state) => ({
-  records: state.tracking.records
+const selector = createStructuredSelector({
+  recordsList: recordsListSelector
 })
 
 const actions = {
