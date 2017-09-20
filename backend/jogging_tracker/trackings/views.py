@@ -13,6 +13,10 @@ class RecordViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = RecordSerializer
 
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
+
     def get_queryset(self):
         qs = super(RecordViewSet, self).get_queryset()
         date_from = self.request.query_params.get('from', None)
