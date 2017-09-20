@@ -1,6 +1,6 @@
 import { createAction, handleActions } from 'redux-actions'
 import { requestSuccess, requestFail } from 'redux/api/request'
-import { reject } from 'lodash'
+import { omit, reject } from 'lodash'
 
 // ------------------------------------
 // Constants
@@ -26,8 +26,13 @@ export const getReport = createAction(GET_USER_REPORT)
 const initialState = {
   user: null,
   status: 'INIT',
-  users: {
-    results: []
+  users: [],
+  params: {
+    count: 0,
+    previous: null,
+    next: null,
+    page_size: 10,
+    page: 1
   },
   report: null
 }
@@ -52,7 +57,11 @@ export default handleActions({
   [requestSuccess(GET_USERS)]: (state, { payload }) => ({
     ...state,
     status: requestSuccess(GET_USERS),
-    users: payload,
+    users: payload.results,
+    params: {
+      ...state.params,
+      ...omit(payload, 'results')
+    },
     error: null
   }),
 
@@ -91,9 +100,10 @@ export default handleActions({
   [requestSuccess(DELETE_USER)]: (state, { payload }) => ({
     ...state,
     status: requestSuccess(DELETE_USER),
-    users: {
-      ...state.users,
-      results: reject(state.users.results, { id: payload.id })
+    users: reject(state.users, { id: payload.id }),
+    params: {
+      ...state.params,
+      count: Math.max(state.params.count - 1, 0),
     },
     error: null
   }),

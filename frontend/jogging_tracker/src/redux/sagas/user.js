@@ -1,4 +1,5 @@
 import { takeLatest } from 'redux-saga/effects'
+import { get, pick } from 'lodash'
 import { GET_USER, GET_USERS, CREATE_USER, UPDATE_USER, DELETE_USER, GET_USER_REPORT }
   from 'redux/modules/user'
 import apiCall from '../api/apiCall'
@@ -12,7 +13,11 @@ const doGetUser = apiCall({
 const doGetUsers = apiCall({
   type: GET_USERS,
   method: 'get',
-  path: () => `/users/`
+  path: () => `/users/`,
+  payloadOnSuccess: (res, { payload }) => ({
+    ...res,
+    ...pick(get(payload, 'params', {}), ['page', 'page_size']),
+  })
 })
 
 const doCreateUser = apiCall({

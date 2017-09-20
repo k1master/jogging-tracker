@@ -8,10 +8,12 @@ import { createStructuredSelector } from 'reselect'
 import { show } from 'redux-modal'
 import { withRouter } from 'react-router'
 import { getUsers, deleteUser } from 'redux/modules/user'
+import { pick } from 'lodash'
 import { ucFirst } from 'helpers'
-import { usersListSelector } from 'redux/selectors'
+import { usersListSelector, usersParamsSelector } from 'redux/selectors'
 import confirm from 'containers/ConfirmModal'
 import MdPersonAdd from 'react-icons/lib/md/person-add'
+import Pagination from 'components/Pagination'
 import ReportModal from 'containers/ReportModal'
 
 class UsersList extends Component {
@@ -41,8 +43,19 @@ class UsersList extends Component {
     show('reportModal', { user })
   }
 
+  handlePagination = (pagination) => {
+    const { getUsers, params } = this.props
+    getUsers({
+      params: {
+        ...pick(params, ['page', 'page_size']),
+        ...pagination
+      }
+    })
+  }
+
   render() {
-    const { usersList } = this.props
+    const { usersList, params } = this.props
+    const pagination = pick(params, ['page', 'page_size', 'count'])
 
     return (
       <div>
@@ -86,6 +99,7 @@ class UsersList extends Component {
             ))}
           </tbody>
         </Table>
+        <Pagination pagination={pagination} setPagination={this.handlePagination} />
         <ReportModal />
       </div>
     )
@@ -93,7 +107,8 @@ class UsersList extends Component {
 }
 
 const selector = createStructuredSelector({
-  usersList: usersListSelector
+  usersList: usersListSelector,
+  params: usersParamsSelector
 })
 
 const actions = {
