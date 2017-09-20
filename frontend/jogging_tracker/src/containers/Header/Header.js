@@ -43,6 +43,9 @@ class Header extends React.Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             {auth.me
             ? <Nav className="ml-auto" navbar>
+              <NavItem>
+                <Link to='/dashboard' className='nav-link'>Dashboard</Link>
+              </NavItem>
               {canManageUsers(auth.me) && <NavItem>
                 <Link to='/users' className='nav-link'>Users</Link>
               </NavItem>}

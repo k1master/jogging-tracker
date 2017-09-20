@@ -11,7 +11,7 @@ import './Dashboard.scss'
 
 const Dashboard = ({ profile, show }) => (
   <Row>
-    <Col xs={12} md={{ size: 8, offset: 2 }}>
+    <Col xs={12} md={{ size: 6, offset: 3 }}>
       <Jumbotron>
         <h1>Welcome, {profile.first_name}!</h1>
         <p className="lead">
@@ -20,11 +20,13 @@ const Dashboard = ({ profile, show }) => (
         </p>
         <ButtonGroup vertical className='btn-block'>
           {canManageUsers(profile) &&
-            <Button tag={Link} to='/users'>Manage Users</Button>
+            <Button tag={Link} to='/users' className='text-left'>Manage Users</Button>
           }
-          <Button tag={Link} to='/records'>Manage Jogging Tracking Records</Button>
-          <Button onClick={()=> show('reportModal')}>View My Report</Button>
-          <Button tag={Link} to='/profile'>Edit Your Profile</Button>
+          <Button tag={Link} to='/records' className='text-left'>
+            Manage Jogging Tracking Records
+          </Button>
+          <Button onClick={()=> show('reportModal')} className='text-left'>View My Report</Button>
+          <Button tag={Link} to='/profile' className='text-left'>Edit Your Profile</Button>
         </ButtonGroup>
       </Jumbotron>
       <ReportModal user={profile} />

@@ -80,7 +80,6 @@ class RecordEdit extends Component {
   render() {
     const { trackingState, handleSubmit, match: { params }, profile,
       usersList, formValues } = this.props
-      console.log(this.props)
 
     return (
       <Row>
