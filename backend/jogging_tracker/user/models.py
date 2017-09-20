@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Sum, Avg, Min, Max, Q
+from django.db.models import Sum, Avg, Min, Max
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import BaseUserManager
@@ -17,9 +17,9 @@ ROLE_CHOICES = (
 class UserQuerySet(models.QuerySet):
     def filter_by_user(self, user):
         if user.is_admin:
-            return self.filter(Q(role__in=['manager', 'user']) | Q(pk=user.pk))
+            return self.filter(role__in=['admin', 'manager', 'user'])
         if user.is_manager:
-            return self.filter(Q(role='user') | Q(pk=user.pk))
+            return self.filter(role__in=['manager', 'user'])
         else:
             return self.filter(pk=user.pk)
 
