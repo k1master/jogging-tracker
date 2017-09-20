@@ -1,8 +1,10 @@
 from django.db import models
+from django.db.models import Sum, Avg, Min, Max
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import BaseUserManager
 from django.utils.functional import cached_property
+from datetime import date
 
 # Create your models here.
 ROLE_CHOICES = (
@@ -19,7 +21,7 @@ class UserQuerySet(models.QuerySet):
         if user.is_manager:
             return self.filter(role='user')
         else:
-            return self.none()
+            return self.filter(pk=user.pk)
 
 
 class UserManager(BaseUserManager):
@@ -86,3 +88,21 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_full_name(self):
         return self.first_name + ' ' + self.last_name
+
+    def get_report(self):
+        res = self.records.aggregate(
+            total_distance=Sum('distance'),
+            total_duration=Sum('duration'),
+            first_date_recorded=Min('date_recorded'),
+            last_date_recorded=Max('date_recorded')
+        )
+        total_distance = res['total_distance'] or 0
+        total_duration = res['total_duration'] or 1
+        first_date_recorded = res['first_date_recorded'] or date.today()
+        last_date_recorded = res['last_date_recorded'] or date.today()
+        date_diff = (last_date_recorded - first_date_recorded).days + 1
+
+        return {
+            'avg_speed': total_distance / total_duration,
+            'distance_per_week': total_distance / date_diff
+        }

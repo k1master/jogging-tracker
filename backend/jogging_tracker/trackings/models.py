@@ -18,4 +18,4 @@ class Record(models.Model):
     objects = RecordQuerySet.as_manager()
 
     def __str__(self):
-        return '{}-{}'.format(self.user, self.logged_date)
+        return '{}::{}'.format(self.user, self.date_recorded)
