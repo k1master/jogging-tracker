@@ -27,8 +27,8 @@ class RecordsList extends Component {
   };
 
   componentWillMount () {
-    const { getRecords } = this.props
-    getRecords()
+    const { getRecords, params } = this.props
+    getRecords({ params })
   }
 
   handleDeleteRecord = (id) => () => {

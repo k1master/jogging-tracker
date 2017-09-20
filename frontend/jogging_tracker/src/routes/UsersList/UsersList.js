@@ -25,8 +25,8 @@ class UsersList extends Component {
   };
 
   componentWillMount () {
-    const { getUsers } = this.props
-    getUsers()
+    const { getUsers, params } = this.props
+    getUsers({ params })
   }
 
   handleDeleteUser = (id) => () => {

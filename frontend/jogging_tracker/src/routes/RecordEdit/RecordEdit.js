@@ -25,7 +25,7 @@ const getUserOptions = (userList) => {
   })) : [])
   userOptions.unshift({
     label: '- Select User -',
-    value: null
+    value: ''
   })
   return userOptions
 }
