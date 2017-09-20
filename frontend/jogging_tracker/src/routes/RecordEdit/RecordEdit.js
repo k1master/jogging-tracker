@@ -13,6 +13,7 @@ import { requestFail, requestSuccess } from 'redux/api/request'
 import { isFieldRequired, ucFirst } from 'helpers'
 import { isUser } from 'helpers/roleHelpers'
 import InputField from 'components/InputField'
+import InputGroupField from 'components/InputGroupField'
 import DateTimeField from 'components/DateTimeField'
 
 const getUserOptions = (userList) => {
@@ -109,7 +110,8 @@ class RecordEdit extends Component {
               type='number'
               required
               validate={[isFieldRequired]}
-              component={InputField}
+              suffix='seconds'
+              component={InputGroupField}
             />
             <Field
               label='Distance'
@@ -117,7 +119,8 @@ class RecordEdit extends Component {
               type='number'
               required
               validate={[isFieldRequired]}
-              component={InputField}
+              suffix='meters'
+              component={InputGroupField}
             />
             {!isUser(profile) && <Field
               label='User'
