@@ -92,8 +92,6 @@ class Profile extends Component {
                   name='password'
                   type='password'
                   placeholder='&#9679;&#9679;&#9679;&#9679;&#9679;'
-                  required
-                  validate={[isFieldRequired]}
                   component={InputField}
                 />
               </Col>
@@ -103,8 +101,6 @@ class Profile extends Component {
                   name='confirm_password'
                   type='password'
                   placeholder='&#9679;&#9679;&#9679;&#9679;&#9679;'
-                  required
-                  validate={[isFieldRequired]}
                   component={InputField}
                 />
               </Col>
