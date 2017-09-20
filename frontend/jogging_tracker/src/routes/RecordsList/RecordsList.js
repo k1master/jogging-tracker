@@ -88,6 +88,7 @@ class RecordsList extends Component {
               <th>User</th>
               <th className='text-center'>Duration</th>
               <th className='text-center'>Distance</th>
+              <th className='text-center'>Avg. Speed</th>
               <th className='text-right'>Actions</th>
             </tr>
           </thead>
@@ -99,6 +100,9 @@ class RecordsList extends Component {
                 <td>{record.user_fullname}</td>
                 <td className='text-center'>{hhmmss(record.duration)}</td>
                 <td className='text-center'>{distanceUnit(record.distance)}</td>
+                <td className='text-center'>
+                  {distanceUnit(record.distance / record.duration, '/s')}
+                </td>
                 <td className='text-right'>
                   <Link className='btn btn-primary btn-sm' to={`/records/edit/${record.id}`}>
                     Edit

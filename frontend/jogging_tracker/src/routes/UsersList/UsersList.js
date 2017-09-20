@@ -39,9 +39,9 @@ class UsersList extends Component {
     return (
       <div>
         <h2 className='text-center mb-5'>Manage Users</h2>
-        <div className='text-right'>
-          <Link to='/users/new' className='btn btn-link'>
-            <MdPersonAdd size='1.5em' /> Add a new user
+        <div className='text-right mb-2'>
+          <Link to='/users/new' className='btn btn-primary'>
+            <MdPersonAdd size='1.2em' /> Add a New User
           </Link>
         </div>
         <Table striped>

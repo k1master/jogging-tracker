@@ -1,15 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Alert, Button, Col, Form, Row } from 'reactstrap'
+import { Alert, Button, Col, Form, FormGroup, Label, Input, Row } from 'reactstrap'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { Field, reduxForm } from 'redux-form'
+import { Field, formValueSelector, reduxForm } from 'redux-form'
 import { withRouter } from 'react-router'
 import { createRecord, getRecord, updateRecord, UPDATE_RECORD } from 'redux/modules/tracking'
 import { getUsers } from 'redux/modules/user'
 import { requestFail, requestSuccess } from 'redux/api/request'
-import { getDateStr, isFieldRequired, ucFirst } from 'helpers'
+import { distanceUnit, getDateStr, isFieldRequired, ucFirst } from 'helpers'
 import { isUser } from 'helpers/roleHelpers'
 import InputField from 'components/InputField'
 import InputGroupField from 'components/InputGroupField'
@@ -77,7 +77,8 @@ class RecordEdit extends Component {
 
   render() {
     const { trackingState, handleSubmit, match: { params }, profile,
-      usersList } = this.props
+      usersList, formValues } = this.props
+      console.log(this.props)
 
     return (
       <Row>
@@ -121,6 +122,12 @@ class RecordEdit extends Component {
               suffix='meters'
               component={InputGroupField}
             />
+            <FormGroup>
+              <Label for="exampleEmail">Avg. Speed</Label>
+              <Input static>
+                {distanceUnit((formValues.distance || 0) / (formValues.duration || 1), '/s')}
+              </Input>
+            </FormGroup>
             {!isUser(profile) && <Field
               label='User'
               name='user'
@@ -147,14 +154,15 @@ class RecordEdit extends Component {
   }
 }
 
-const selector = ({ auth, tracking, user }, props) => ({
+const selector = ({ auth, form, tracking, user }, props) => ({
   profile: auth.me,
   initialValues: props.match.params.id && tracking.record ? {
     ...tracking.record,
     user: tracking.record.user
   } : {},
   trackingState: tracking,
-  usersList: user.users.results
+  usersList: user.users.results,
+  formValues: formValueSelector('recordForm')({ form }, 'duration', 'distance')
 })
 
 const actions = {

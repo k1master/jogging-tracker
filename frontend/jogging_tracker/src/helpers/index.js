@@ -19,8 +19,10 @@ export const hhmmss = (secs) => {
     padStart(secs)
 }
 
-export const distanceUnit = (distance) =>
-  distance < 1000 ? distance + 'm' : Math.round(distance / 100) / 10 + 'km'
+export const distanceUnit = (distance, suffix = '') =>
+  distance < 1000
+  ? Math.round(distance * 10) / 10 + ' m' + suffix
+  : Math.round(distance / 100) / 10 + ' km' + suffix
 
 export const getDateStr = (dateTime) =>
   dateTime ? moment(dateTime).format('YYYY-MM-DD') : undefined
