@@ -101,8 +101,9 @@ class User(AbstractBaseUser, PermissionsMixin):
         first_date_recorded = res['first_date_recorded'] or date.today()
         last_date_recorded = res['last_date_recorded'] or date.today()
         date_diff = (last_date_recorded - first_date_recorded).days + 1
+        weeks = date_diff / 7
 
         return {
             'avg_speed': total_distance / total_duration,
-            'distance_per_week': total_distance / date_diff
+            'distance_per_week': total_distance / weeks
         }
