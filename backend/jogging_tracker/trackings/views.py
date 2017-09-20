@@ -15,4 +15,11 @@ class RecordViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         qs = super(RecordViewSet, self).get_queryset()
+        date_from = self.request.query_params.get('from', None)
+        date_to = self.request.query_params.get('to', None)
+        if date_from is not None:
+            qs = qs.filter(date_recorded__gte=date_from)
+        if date_to is not None:
+            qs = qs.filter(date_recorded__lte=date_to)
+
         return qs.filter_by_user(self.request.user)
