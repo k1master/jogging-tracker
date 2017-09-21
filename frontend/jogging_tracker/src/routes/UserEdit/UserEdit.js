@@ -5,10 +5,11 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import { Field, reduxForm } from 'redux-form'
+import { filter } from 'lodash'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import { createUser, getUser, updateUser, CREATE_USER, UPDATE_USER } from 'redux/modules/user'
-import { isAdmin } from 'helpers/roleHelpers'
+import { isAdmin, isManager } from 'helpers/roleHelpers'
 import { isFieldRequired, ucFirst } from 'helpers'
 import { requestFail, requestSuccess } from 'redux/api/request'
 import * as selectors from 'redux/selectors'
@@ -17,17 +18,23 @@ import InputField from 'components/InputField'
 const roleOptions = [
   {
     value: 'user',
-    label: 'User'
+    label: 'User',
+    roles: ['admin', 'manager']
   },
   {
     value: 'manager',
-    label: 'Manager'
+    label: 'Manager',
+    roles: ['admin', 'manager']
   },
   {
     value: 'admin',
-    label: 'Admin'
+    label: 'Admin',
+    roles: ['admin']
   }
 ]
+
+const getRoleOptions = ({ role }) =>
+  filter(roleOptions, (item) => item.roles.includes(role))
 
 const requestIsFailed = ({ status }) =>
   status === requestFail(CREATE_USER) || status === requestFail(UPDATE_USER)
@@ -77,8 +84,8 @@ class UserEdit extends Component {
   render() {
     const { userState, handleSubmit, initialValues, match: { params },
       profile } = this.props
-    const shouldShowRoleField = isAdmin(profile) && initialValues &&
-      profile.id !== initialValues.id
+    const shouldShowRoleField = (isAdmin(profile) || isManager(profile)) &&
+      initialValues && profile.id !== initialValues.id
 
     return (
       <Row>
@@ -124,7 +131,7 @@ class UserEdit extends Component {
               required
               validate={[isFieldRequired]}
               component={InputField}
-              options={roleOptions}
+              options={getRoleOptions(profile)}
             />}
             <Field
               label='Password'
