@@ -5,7 +5,6 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import { Field, reduxForm } from 'redux-form'
-import { withRouter } from 'react-router'
 import { authStateSelector } from 'redux/selectors'
 import { isFieldRequired } from 'helpers'
 import { login, DO_LOGIN } from 'redux/modules/auth'
@@ -30,16 +29,12 @@ class Login extends Component {
   static propTypes = {
     auth: PropTypes.object,
     handleSubmit: PropTypes.func,
-    history: PropTypes.object,
     login: PropTypes.func
   };
 
   handleLogin = (values) => {
-    const { history, login } = this.props
-    login({
-      body: values,
-      success: () => history.push('/dashboard')
-    })
+    const { login } = this.props
+    login({ body: values })
   }
 
   render() {
@@ -87,6 +82,5 @@ export default compose(
   reduxForm({
     form: 'loginForm'
   }),
-  withRouter,
   connect(selector, actions)
 )(Login)
