@@ -62,7 +62,7 @@ class RecordsList extends Component {
   }
 
   render() {
-    const { filterForm: { handleSubmit }, params, recordsList } = this.props
+    const { handleSubmit, params, recordsList } = this.props
     const pagination = pick(params, ['page', 'page_size', 'count'])
 
     return (
@@ -139,6 +139,7 @@ class RecordsList extends Component {
 }
 
 const selector = createStructuredSelector({
+  initialValues: recordsParamsSelector,
   recordsList: recordsListSelector,
   params: recordsParamsSelector
 })
@@ -152,8 +153,7 @@ export default compose(
   connect(selector, actions),
   reduxForm({
     form: 'recordsFilterForm',
-    enableReinitialize: true,
-    propNamespace: 'filterForm'
+    enableReinitialize: true
   }),
   withRouter
 )(RecordsList)
