@@ -5,26 +5,27 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 import { Field, reduxForm } from 'redux-form'
-import { withRouter } from 'react-router'
 import { authStateSelector } from 'redux/selectors'
 import { isFieldRequired, ucFirst } from 'helpers'
+import { pick } from 'lodash'
 import { requestFail } from 'redux/api/request'
-import { signup, DO_SIGNUP } from 'redux/modules/auth'
+import { signup, DO_SIGNUP, login } from 'redux/modules/auth'
 import InputField from 'components/InputField'
 
 class Signup extends Component {
   static propTypes = {
     auth: PropTypes.object,
     handleSubmit: PropTypes.func,
-    history: PropTypes.object,
     signup: PropTypes.func
   };
 
   handleSignup = (values) => {
-    const { history, signup } = this.props
+    const { login, signup } = this.props
     signup({
       body: values,
-      success: () => history.push('/login')
+      success: () => login({
+        body: pick(values, ['email', 'password'])
+      })
     })
   }
 
@@ -117,6 +118,7 @@ const selector = createStructuredSelector({
 })
 
 const actions = {
+  login,
   signup
 }
 
@@ -133,6 +135,5 @@ export default compose(
     form: 'signupForm',
     validate
   }),
-  withRouter,
   connect(selector, actions)
 )(Signup)
