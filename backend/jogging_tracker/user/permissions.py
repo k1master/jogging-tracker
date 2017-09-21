@@ -7,7 +7,6 @@ __all__ = ['IsUser', 'IsManager', 'IsAdmin']
 
 class IsUser(permissions.BasePermission):
     def has_permission(self, request, view):
-        print(request.user.role)
         return request.user.is_authenticated() and request.user.is_user
 
 

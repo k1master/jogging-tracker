@@ -75,7 +75,10 @@ class UserEdit extends Component {
   }
 
   render() {
-    const { userState, handleSubmit, match: { params }, profile } = this.props
+    const { userState, handleSubmit, initialValues, match: { params },
+      profile } = this.props
+    const shouldShowRoleField = isAdmin(profile) && initialValues &&
+      profile.id !== initialValues.id
 
     return (
       <Row>
@@ -114,7 +117,7 @@ class UserEdit extends Component {
               validate={[isFieldRequired]}
               component={InputField}
             />
-            {isAdmin(profile) && <Field
+            {shouldShowRoleField && <Field
               label='Role'
               name='role'
               type='select'
@@ -151,7 +154,8 @@ class UserEdit extends Component {
 
 const selector = createStructuredSelector({
   profile: selectors.profileSelector,
-  initialValues: (state, props) => props.match.params.id ? state.user.user : {},
+  initialValues: (state, props) =>
+    props.match.params.id ? selectors.userDetailSelector(state) : {},
   userState: selectors.userStateSelector
 })
 
