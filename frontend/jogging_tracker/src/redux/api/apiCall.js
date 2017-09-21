@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { put } from 'redux-saga/effects'
+import { call, put } from 'redux-saga/effects'
 import { get } from 'lodash'
 import { requestFail, requestPending, requestSuccess } from './request'
 
@@ -41,7 +41,7 @@ export default ({
       type: requestPending(type)
     })
 
-    const res = yield axios.request({
+    const res = yield call(axios.request, {
       url: typeof path === 'function' ? path(action) : path,
       method: method.toLowerCase(),
       headers: Object.assign({}, defaultHeaders(), headers),
