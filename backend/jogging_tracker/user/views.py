@@ -31,7 +31,7 @@ class UserViewSet(viewsets.ModelViewSet):
     def profile(self, request, *args, **kwargs):
         SerializerClass = self.get_serializer_class()
         if request.method in ['PUT']:
-            serializer = SerializerClass(instance=request.user, data=request.data)
+            serializer = SerializerClass(instance=request.user, data=request.data, context={'request': request})
             serializer.is_valid(raise_exception=True)
             serializer.save()
         else:
