@@ -15,6 +15,7 @@ import { isUser } from 'helpers/roleHelpers'
 import { requestFail, requestSuccess } from 'redux/api/request'
 import * as selectors from 'redux/selectors'
 import DateTimeField from 'components/DateTimeField'
+import DurationField from 'components/DurationField'
 import InputField from 'components/InputField'
 import InputGroupField from 'components/InputGroupField'
 
@@ -119,7 +120,7 @@ class RecordEdit extends Component {
               required
               validate={[isFieldRequired]}
               suffix='seconds'
-              component={InputGroupField}
+              component={DurationField}
             />
             <Field
               label='Distance'
