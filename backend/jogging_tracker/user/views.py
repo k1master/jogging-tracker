@@ -41,4 +41,6 @@ class UserViewSet(viewsets.ModelViewSet):
     @detail_route(methods=['get'], permission_classes=[IsAuthenticated,], url_path='report')
     def report(self, request, *args, **kwargs):
         user = self.get_object()
-        return Response(user.get_report())
+        date_from = self.request.query_params.get('from', None)
+        date_to = self.request.query_params.get('to', None)
+        return Response(user.get_report(date_from=date_from, date_to=date_to))

@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import BaseUserManager
 from django.utils.functional import cached_property
-from datetime import date
+from datetime import date, timedelta
 
 # Create your models here.
 ROLE_CHOICES = (
@@ -89,21 +89,59 @@ class User(AbstractBaseUser, PermissionsMixin):
     def get_full_name(self):
         return self.first_name + ' ' + self.last_name
 
-    def get_report(self):
-        res = self.records.aggregate(
+    def get_report(self, date_from, date_to):
+        qs = self.records.all()
+        if date_from is not None:
+            qs = qs.filter(date_recorded__gte=date_from)
+        if date_to is not None:
+            qs = qs.filter(date_recorded__lte=date_to)
+
+        agg_res = qs.aggregate(
             total_distance=Sum('distance'),
             total_duration=Sum('duration'),
             first_date_recorded=Min('date_recorded'),
             last_date_recorded=Max('date_recorded')
         )
-        total_distance = res['total_distance'] or 0
-        total_duration = res['total_duration'] or 1
-        first_date_recorded = res['first_date_recorded'] or date.today()
-        last_date_recorded = res['last_date_recorded'] or date.today()
+        total_distance = agg_res['total_distance'] or 0
+        total_duration = agg_res['total_duration'] or 1
+        first_date_recorded = agg_res['first_date_recorded'] or date.today()
+        last_date_recorded = agg_res['last_date_recorded'] or date.today()
+
+        week_start = first_date_recorded.isocalendar()[1] + first_date_recorded.isocalendar()[0] * 366
+        week_end = last_date_recorded.isocalendar()[1] + last_date_recorded.isocalendar()[0] * 366
+        sums = {}
+        for week in range(week_start, week_end + 1):
+            sums[week] = {
+                'distance': 0,
+                'duration': 0
+            }
+
+        for item in qs:
+            isocal = item.date_recorded.isocalendar()
+            week = isocal[1] + isocal[0] * 366
+            sums[week]['distance'] += item.distance
+            sums[week]['duration'] += item.duration
+
+        weekly = []
+        for week in range(week_start, week_end + 1):
+            if sums[week]['distance'] != 0 and sums[week]['duration'] != 0:
+                week_of_year = week % 366
+                year = int(week / 366)
+                first_date_of_year = date(year, 1, 1)
+                first_week_day_of_year = first_date_of_year - timedelta(first_date_of_year.isocalendar()[2] - 1)
+                week_start = first_week_day_of_year + timedelta(weeks=week_of_year)
+                weekly.append({
+                    'distance': sums[week]['distance'],
+                    'avg_speed': sums[week]['distance'] / sums[week]['duration'],
+                    'from': week_start,
+                    'to': week_start + timedelta(days=6)
+                })
+
         date_diff = (last_date_recorded - first_date_recorded).days + 1
-        weeks = date_diff / 7
+        weeks = round(date_diff / 7)
 
         return {
             'avg_speed': total_distance / total_duration,
-            'distance_per_week': total_distance / weeks
+            'distance_per_week': total_distance / weeks,
+            'weekly': weekly
         }
