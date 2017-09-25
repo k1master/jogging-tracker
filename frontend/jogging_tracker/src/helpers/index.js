@@ -10,13 +10,12 @@ export const padStart = (num, digits = 2) =>
   num.toString().padStart(digits, '0')
 
 export const hhmmss = (secs) => {
-  let minutes = Math.floor(secs / 60)
-  secs = secs % 60
-  var hours = Math.floor(minutes / 60)
-  minutes = minutes % 60
+  const seconds = secs % 60
+  const minutes = Math.floor(secs / 60) % 60
+  const hours = Math.floor(secs / 3600)
   return (hours ? padStart(hours) + ':' : '') +
-    (minutes ? padStart(minutes) + ':' : '') +
-    padStart(secs)
+    (minutes ? padStart(minutes) : '00') + ':' +
+    padStart(seconds)
 }
 
 export const distanceUnit = (distance, suffix = '') =>

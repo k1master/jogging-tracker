@@ -41,7 +41,10 @@ export default class Pagination extends Component {
   handlePageSize = (pageSize) => () => {
     const { pagination, setPagination } = this.props
     if (pageSize !== pagination.page_size) {
-      setPagination({ page_size: pageSize })
+      setPagination({
+        page_size: pageSize,
+        page: 1
+      })
     }
   }
 
