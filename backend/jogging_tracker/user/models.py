@@ -5,6 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import BaseUserManager
 from django.utils.functional import cached_property
 from datetime import date, timedelta
+from math import ceil
 
 # Create your models here.
 ROLE_CHOICES = (
@@ -138,7 +139,7 @@ class User(AbstractBaseUser, PermissionsMixin):
                 })
 
         date_diff = (last_date_recorded - first_date_recorded).days + 1
-        weeks = round(date_diff / 7)
+        weeks = ceil(date_diff / 7) or 1
 
         return {
             'avg_speed': total_distance / total_duration,

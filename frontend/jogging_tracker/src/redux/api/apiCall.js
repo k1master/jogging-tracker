@@ -5,7 +5,7 @@ import { requestFail, requestPending, requestSuccess } from './request'
 
 const defaultHeaders = () => {
   const auth = localStorage.getItem('jogging_tracker_auth')
-  axios.defaults.baseURL = process.env.API_ROOT + '/'
+  axios.defaults.baseURL = 'http://localhost:8000/'
   let headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/json'

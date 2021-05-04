@@ -98,6 +98,7 @@ JWT_AUTH = {
 CORS_ORIGIN_WHITELIST = (
     'google.com',
     'localhost:3000',
+    'localhost:3001',
     'localhost:8000',
     '127.0.0.1:9000'
 )
